@@ -3,1338 +3,1195 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sachinandan De - National Professor</title>
+    <title>Sachinandan De | National Professor</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Fonts: Syne (Display) & Montserrat (Body) -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
+        /* --- CSS VARIABLES & RESET --- */
         :root {
-            --bg-primary: #F3F1ED;
-            --text-primary: #000000;
-            --text-secondary: #6F6F6F;
-            --divider: #D8D8D8;
-            --accent: #B0B0B0;
-            --font-display: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            --font-body: 'EB Garamond', 'Garamond', Georgia, serif;
+            --bg-color: #F0F0EB; /* Warm Swiss Gray */
+            --text-color: #0A0A0A; /* Stark Black */
+            --accent-color: #0A0A0A;
+            --border-color: rgba(10, 10, 10, 0.15);
+            
+            /* Font Pairing */
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'Montserrat', sans-serif;
+            
+            --easing: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         html {
             scroll-behavior: smooth;
-            overflow-x: hidden;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: none; /* Custom cursor logic */
         }
 
         body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: var(--font-body);
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
             overflow-x: hidden;
-        }
-
-        /* Scroll Progress */
-        .scroll-progress {
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 3px;
-            background: var(--text-primary);
-            width: 0%;
-            z-index: 9999;
-            transition: width 0.1s ease;
-        }
-
-        /* Navbar */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: rgba(243, 241, 237, 0.95);
-            backdrop-filter: blur(10px);
-            padding: 2rem 4rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--divider);
-        }
-
-        .nav-brand {
-            font-size: 1.1rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            color: var(--text-primary);
-            font-family: var(--font-display);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 3rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            position: relative;
-            transition: color 0.3s ease;
-            font-family: var(--font-display);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--text-primary);
-            transition: width 0.4s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-links a:hover::after {
             width: 100%;
-        }
-
-        .nav-email {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
             font-weight: 400;
         }
 
-        /* Hero Section */
-        .hero {
-            min-height: 100vh;
-            padding: 10rem 4rem 4rem;
+        a {
+            text-decoration: none;
+            color: inherit;
+            cursor: none;
+        }
+
+        /* --- CUSTOM CURSOR --- */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--text-color);
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(10, 10, 10, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        body:hover .cursor-outline {
+            width: 40px;
+            height: 40px;
+        }
+
+        a:hover ~ .cursor-outline,
+        a:hover .cursor-outline,
+        button:hover ~ .cursor-outline {
+            transform: scale(1.5);
+            background-color: rgba(10, 10, 10, 0.1);
+            border-color: transparent;
+        }
+
+        /* --- LOADER --- */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--text-color);
+            color: var(--bg-color);
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: transform 0.8s var(--easing);
+        }
+
+        .loader-text {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .loader.hidden {
+            transform: translateY(-100%);
+        }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 3rem;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            background: rgba(240, 240, 235, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .brand {
+            font-family: var(--font-display);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 1.2rem;
+        }
+
+        .phd {
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+
+        .nav-center {
+            display: flex;
+            gap: 3rem;
+        }
+
+        .nav-link {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
             position: relative;
-            max-width: 1400px;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: currentColor;
+            transition: width 0.3s var(--easing);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .email-link {
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+
+        /* --- LAYOUT UTILS --- */
+        .border-top {
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* --- HERO SPLIT SECTION --- */
+        .hero-split {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            min-height: 100vh;
+            padding-top: 80px;
+            max-width: 1600px;
             margin: 0 auto;
-            text-align: center;
+            position: relative;
         }
 
         .hero-content {
             display: flex;
             flex-direction: column;
-            gap: 2rem;
-            align-items: center;
-            width: 100%;
+            justify-content: center;
+            padding: 4rem 3rem;
+            border-right: 1px solid var(--border-color);
+        }
+
+        .hero-header-group {
+            margin-bottom: 2rem;
+        }
+
+        .hero-title, .hero-name {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 5.5vw, 6rem);
+            line-height: 0.9;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            color: var(--text-color);
         }
 
         .hero-name {
-            font-size: clamp(3.5rem, 8vw, 7rem);
-            font-weight: 700;
-            line-height: 0.95;
-            letter-spacing: -0.02em;
-            font-family: var(--font-display);
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.2s forwards;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--text-color);
+            margin-top: 10px;
         }
 
-        .hero-title {
-            font-size: clamp(1.8rem, 4vw, 3.5rem);
-            font-weight: 700;
-            line-height: 1.2;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            font-family: var(--font-display);
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.4s forwards;
+        .split-text div { overflow: hidden; }
+
+        .hero-bio {
+            max-width: 500px;
+            margin-bottom: 4rem;
         }
 
-        .hero-institution {
-            font-size: clamp(1.2rem, 2.5vw, 2rem);
-            font-weight: 700;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            font-family: var(--font-display);
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.6s forwards;
+        .hero-bio p {
+            font-size: 1rem;
+            line-height: 1.6;
+            font-weight: 500;
+            margin-bottom: 2rem;
         }
 
-        @keyframes fadeInUp {
-            to { 
-                opacity: 1;
-                transform: translateY(0);
-            }
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-        }
-
-        .hero-description {
-            font-size: 1.15rem;
-            line-height: 1.9;
-            color: var(--text-primary);
-            max-width: 900px;
-            margin-top: 2rem;
-            font-family: var(--font-body);
-            opacity: 0;
-            animation: fadeInUp 1s ease 0.8s forwards;
-        }
-
-        .social-links {
+        .hero-actions {
             display: flex;
             gap: 1.5rem;
-            margin-top: 2rem;
-            opacity: 0;
-            animation: fadeInUp 1s ease 1s forwards;
-        }
-
-        .social-link {
-            width: 50px;
-            height: 50px;
-            border: 2px solid var(--text-primary);
-            border-radius: 50%;
-            display: flex;
             align-items: center;
-            justify-content: center;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
         }
 
-        .social-link::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--text-primary);
-            transform: translateY(100%);
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .social-link:hover {
-            transform: translateY(-5px);
-        }
-
-        .social-link:hover::before {
-            transform: translateY(0);
-        }
-
-        .social-link svg {
-            width: 22px;
-            height: 22px;
-            position: relative;
-            z-index: 1;
-            transition: all 0.4s ease;
-        }
-
-        .social-link:hover svg {
-            fill: var(--bg-primary);
-            stroke: var(--bg-primary);
-        }
-
-        .hero-image-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 300px;
-            opacity: 0;
-            animation: scaleIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
-            margin-top: 3rem;
-        }
-
-        @keyframes scaleIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .hero-image {
-            width: 100%;
-            aspect-ratio: 3/4;
-            border-radius: 20px;
-            object-fit: cover;
-            background: linear-gradient(135deg, #e8e6e1 0%, #d4d2cd 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 4rem;
+        .btn-main {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            padding: 1rem 2rem;
+            text-transform: uppercase;
             font-weight: 700;
-            color: var(--text-secondary);
-            position: relative;
-            overflow: hidden;
-            font-family: var(--font-display);
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            transition: transform 0.3s ease;
         }
 
-        .hero-image::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.05) 100%);
+        .btn-main:hover {
+            transform: translateY(-3px);
         }
 
-        .scroll-indicator {
-            position: absolute;
-            bottom: 4rem;
-            left: 4rem;
-            width: 60px;
-            height: 60px;
-            border: 2px solid var(--text-primary);
-            border-radius: 50%;
+        .btn-text {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            border-bottom: 1px solid currentColor;
+        }
+
+        .hero-stats {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            animation: bounceRotate 3s ease infinite;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            gap: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
         }
 
-        .scroll-indicator:hover {
-            transform: scale(1.1);
-            background: var(--text-primary);
+        .h-stat {
+            display: flex;
+            flex-direction: column;
         }
 
-        .scroll-indicator:hover svg {
-            stroke: var(--bg-primary);
+        .hs-num {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 800;
         }
 
-        @keyframes bounceRotate {
-            0%, 100% { 
-                transform: translateY(0) rotate(0deg);
-            }
-            25% {
-                transform: translateY(-10px) rotate(5deg);
-            }
-            50% { 
-                transform: translateY(0) rotate(0deg);
-            }
-            75% {
-                transform: translateY(-5px) rotate(-5deg);
-            }
+        .hs-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            opacity: 0.7;
         }
 
-        .scroll-indicator svg {
-            width: 24px;
-            height: 24px;
-            transform: rotate(90deg);
-            transition: stroke 0.3s ease;
+        .hero-visual {
+            position: relative;
+            height: 100%;
+            width: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Section Base */
-        section {
-            padding: 8rem 4rem;
-            opacity: 0;
-            transform: translateY(80px);
-            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), 
-                        transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+        .image-wrapper {
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .portrait-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(100%);
+            transition: transform 0.8s var(--easing), filter 0.5s ease;
+        }
+
+        .image-wrapper:hover .portrait-img {
+            transform: scale(1.05);
+            filter: grayscale(0%);
+        }
+
+        .visual-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            background: rgba(240, 240, 235, 0.9);
+            backdrop-filter: blur(5px);
+            border-top: 1px solid var(--border-color);
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+
+        /* --- CONTENT SECTIONS --- */
+        .content-section {
+            padding: 6rem 3rem;
             max-width: 1600px;
             margin: 0 auto;
         }
 
-        section.visible {
-            opacity: 1;
-            transform: translateY(0);
+        .section-header {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-right: 2rem;
+            padding-top: 0.5rem;
         }
 
         .section-title {
-            font-size: 0.85rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-bottom: 4rem;
-            color: var(--text-secondary);
             font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
         }
 
-        /* About Section */
-        .about {
+        /* --- ABOUT & TIMELINE GRID --- */
+        .bio-grid {
             display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 6rem;
-            border-top: 1px solid var(--divider);
-        }
-
-        .about-content {
-            max-width: 800px;
-            font-size: 1.15rem;
-            line-height: 1.9;
-            color: var(--text-primary);
-            font-family: var(--font-body);
-        }
-
-        .about-content p {
-            margin-bottom: 1.5rem;
-        }
-
-        /* Stats Section */
-        .stats {
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: 2fr 1fr;
             gap: 4rem;
-            padding: 6rem 4rem;
-            margin: 0 4rem;
-            border-radius: 2px;
+            margin-bottom: 4rem;
+        }
+        
+        .bio-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            max-width: 800px;
         }
 
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 700;
-            display: block;
-            margin-bottom: 0.5rem;
-            font-family: var(--font-display);
-        }
-
-        .stat-label {
-            font-size: 0.75rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            opacity: 0.8;
-            font-family: var(--font-display);
-        }
-
-        /* Research Section */
-        .research {
-            border-top: 1px solid var(--divider);
-        }
-
+        /* --- RESEARCH GRID --- */
         .research-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(3, 1fr);
             gap: 3rem;
         }
 
         .research-card {
-            padding: 2.5rem;
-            border: 1px solid var(--divider);
-            border-radius: 2px;
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-            cursor: pointer;
-            background: rgba(255, 255, 255, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .research-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.02) 100%);
-            opacity: 0;
-            transition: opacity 0.6s ease;
-        }
-
-        .research-card:hover::before {
-            opacity: 1;
+            padding-right: 2rem;
+            border-left: 1px solid var(--border-color);
+            padding-left: 1.5rem;
+            transition: background-color 0.3s ease;
         }
 
         .research-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
-            border-color: var(--text-primary);
+            background-color: rgba(0,0,0,0.02);
         }
 
-        .research-card h3 {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            line-height: 1.3;
-            transition: color 0.3s ease;
+        .card-title {
             font-family: var(--font-display);
-        }
-
-        .research-card:hover h3 {
-            color: var(--text-primary);
-        }
-
-        .research-meta {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            letter-spacing: 0.12em;
+            font-size: 1.4rem;
+            font-weight: 700;
             text-transform: uppercase;
             margin-bottom: 1rem;
-            font-weight: 700;
-            font-family: var(--font-display);
+            letter-spacing: -0.01em;
         }
 
-        .research-card p {
-            color: var(--text-secondary);
-            line-height: 1.7;
-            font-size: 1rem;
-            font-family: var(--font-body);
+        .card-text {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            opacity: 0.8;
         }
 
-        /* Publications Section */
-        .publications {
-            border-top: 1px solid var(--divider);
-        }
-
-        .publications-grid {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 6rem;
-        }
-
-        .publications-list {
-            display: flex;
-            flex-direction: column;
-            gap: 2.5rem;
-        }
-
-        .publication-item {
-            padding-bottom: 2.5rem;
-            border-bottom: 1px solid var(--divider);
-            opacity: 0;
-            transform: translateX(-50px);
-            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-        }
-
-        .publication-item::before {
-            content: '';
-            position: absolute;
-            left: -2rem;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: var(--text-primary);
-            transform: scaleY(0);
-            transform-origin: top;
-            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .publication-item:hover::before {
-            transform: scaleY(1);
-        }
-
-        .publication-item.visible {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .publication-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: start;
-            gap: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .publication-title {
-            font-size: 1.15rem;
-            font-weight: 600;
-            line-height: 1.4;
-            flex: 1;
-            transition: color 0.3s ease;
-            font-family: var(--font-body);
-        }
-
-        .publication-item:hover .publication-title {
-            color: var(--text-primary);
-        }
-
-        .citation-badge {
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
+        .card-link {
+            font-size: 0.8rem;
+            text-transform: uppercase;
             font-weight: 700;
             letter-spacing: 0.05em;
-            white-space: nowrap;
-            min-width: 80px;
-            text-align: center;
-            font-family: var(--font-display);
+            border-bottom: 1px solid currentColor;
+            padding-bottom: 2px;
         }
 
-        .publication-meta {
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            font-style: italic;
+        /* --- PUB LIST --- */
+        .pub-list {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pub-item {
+            display: grid;
+            grid-template-columns: 140px 1fr auto;
+            padding: 2rem 0;
+            border-bottom: 1px solid var(--border-color);
+            align-items: baseline;
+            transition: padding-left 0.3s ease;
+        }
+
+        .pub-item:hover {
+            padding-left: 1.5rem;
+            background-color: rgba(255,255,255,0.5);
+        }
+
+        .pub-year {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 1rem;
+            opacity: 0.6;
+        }
+
+        .pub-title {
             font-family: var(--font-body);
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            max-width: 800px;
+            line-height: 1.4;
         }
 
-        .publication-year {
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-left: 1rem;
-            font-style: normal;
+        .pub-journal {
+            font-size: 0.9rem;
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        .pub-arrow {
+            font-size: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        /* --- CONTACT --- */
+        .contact-hero {
+            padding: 6rem 3rem;
+            text-align: center;
+        }
+        
+        .contact-email-large {
             font-family: var(--font-display);
-        }
-
-        .see-more-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.5rem 3rem;
-            background: var(--text-primary);
-            color: var(--bg-primary);
-            text-decoration: none;
-            font-weight: 700;
-            letter-spacing: 0.1em;
+            font-size: clamp(2rem, 5vw, 5rem);
+            font-weight: 800;
             text-transform: uppercase;
-            font-size: 0.85rem;
-            border-radius: 2px;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            margin-top: 3rem;
-            position: relative;
-            overflow: hidden;
+            letter-spacing: -0.02em;
+            display: block;
+            margin: 2rem 0;
+        }
+
+        /* --- FOOTER --- */
+        .site-footer {
+            padding: 4rem 3rem;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+        }
+
+        .footer-brand span {
+            display: block;
             font-family: var(--font-display);
+            font-weight: 800;
+            text-transform: uppercase;
         }
 
-        .see-more-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+        .footer-contact p {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .footer-email {
+            font-weight: 700;
+            border-bottom: 1px solid currentColor;
+        }
+
+        .footer-social a {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .footer-copy {
+            text-align: right;
+            font-size: 0.8rem;
+            opacity: 0.5;
+        }
+
+        /* --- ANIMATIONS CLASSES --- */
+        .char {
+            display: inline-block;
+            transform: translateY(100%);
             opacity: 0;
-            transition: opacity 0.4s ease;
+            transition: transform 1s var(--easing), opacity 1s var(--easing);
         }
 
-        .see-more-btn:hover::before {
+        .char.visible {
+            transform: translateY(0);
             opacity: 1;
         }
 
-        .see-more-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        .reveal-image .image-wrapper {
+            clip-path: inset(100% 0 0 0);
+            transition: clip-path 1.2s var(--easing);
         }
 
-        .see-more-btn svg {
-            width: 20px;
-            height: 20px;
-            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        .reveal-image.visible .image-wrapper {
+            clip-path: inset(0 0 0 0);
         }
 
-        .see-more-btn:hover svg {
-            transform: translateX(5px);
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 1s ease, transform 1s var(--easing);
         }
 
-        /* Awards Section */
-        .awards {
-            border-top: 1px solid var(--divider);
+        .fade-in-up.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .awards-grid {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 6rem;
+        .fade-in-down {
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 1s ease, transform 1s var(--easing);
         }
 
-        .awards-list {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
+        .fade-in-down.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .award-item {
-            padding: 2rem 0;
-            border-bottom: 1px solid var(--divider);
-        }
-
-        .award-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            font-family: var(--font-display);
-        }
-
-        .award-org {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            font-family: var(--font-body);
-        }
-
-        .award-year {
-            font-size: 0.85rem;
-            color: var(--text-primary);
-            font-weight: 700;
-            margin-top: 0.5rem;
-            font-family: var(--font-display);
-        }
-
-        /* Contact Section */
-        .contact {
-            border-top: 1px solid var(--divider);
-            min-height: 60vh;
-            display: flex;
-            align-items: center;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 300px 1fr;
-            gap: 6rem;
-            width: 100%;
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .contact-item h3 {
-            font-size: 0.75rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--text-secondary);
-            margin-bottom: 0.5rem;
-            font-family: var(--font-display);
-            font-weight: 700;
-        }
-
-        .contact-item p {
-            font-size: 1.1rem;
-            font-family: var(--font-body);
-        }
-
-        .contact-item a {
-            color: var(--text-primary);
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .contact-item a:hover {
-            color: var(--text-secondary);
-        }
-
-        /* Footer */
-        footer {
-            padding: 3rem 4rem;
-            border-top: 1px solid var(--divider);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            font-family: var(--font-display);
-        }
-
-        /* Mobile Responsive */
+        /* --- RESPONSIVE --- */
         @media (max-width: 1024px) {
-            nav {
-                padding: 1.5rem 2rem;
-            }
-
-            .nav-links {
-                gap: 1.5rem;
-            }
-
-            .hero {
-                padding: 8rem 2rem 4rem;
-            }
-
-            .hero-name {
-                font-size: 3rem;
-            }
-
-            .hero-title {
-                font-size: 2rem;
-            }
-
-            .hero-institution {
-                font-size: 1.3rem;
-            }
-
-            .hero-description {
-                font-size: 1rem;
-            }
-
-            .hero-image-wrapper {
-                max-width: 280px;
-            }
-
-            section {
-                padding: 6rem 2rem;
-            }
-
-            .about,
-            .publications-grid,
-            .awards-grid,
-            .contact-grid {
+            .hero-split {
                 grid-template-columns: 1fr;
-                gap: 3rem;
+                grid-template-rows: auto auto;
             }
-
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-                margin: 0 2rem;
-                gap: 3rem;
+            .hero-content {
+                border-right: none;
+                padding: 4rem 2rem;
+                min-height: auto;
             }
-
+            .hero-visual {
+                min-height: 50vh;
+            }
             .research-grid {
                 grid-template-columns: 1fr;
             }
-
-            .publication-header {
-                flex-direction: column;
-                gap: 1rem;
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
             }
-
-            .citation-badge {
-                align-self: flex-start;
+            .bio-grid {
+                grid-template-columns: 1fr;
             }
         }
 
         @media (max-width: 768px) {
-            nav {
-                flex-direction: column;
-                gap: 1rem;
-                padding: 1.5rem;
+            .navbar { padding: 1.5rem; }
+            .nav-center { display: none; }
+            .hero-title, .hero-name {
+                font-size: 3rem;
             }
-
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 1rem;
-            }
-
-            .nav-links a {
-                font-size: 0.75rem;
-            }
-
-            .hero-name {
-                font-size: 2.5rem;
-            }
-
-            .hero-title {
-                font-size: 1.5rem;
-            }
-
-            .hero-institution {
-                font-size: 1rem;
-            }
-
-            .hero-description {
-                font-size: 0.95rem;
-            }
-
-            .social-links {
-                justify-content: center;
-            }
-
-            .social-link {
-                width: 45px;
-                height: 45px;
-            }
-
-            .social-link svg {
-                width: 18px;
-                height: 18px;
-            }
-
-            .stats {
+            .pub-item {
                 grid-template-columns: 1fr;
-                gap: 2rem;
+                gap: 0.5rem;
             }
-
-            .scroll-indicator {
-                left: 50%;
-                transform: translateX(-50%);
-            }
-
-            .see-more-btn {
-                padding: 1.2rem 2rem;
-                font-size: 0.75rem;
-                width: 100%;
-                justify-content: center;
+            .pub-year { opacity: 0.5; font-size: 0.9rem; }
+            .pub-arrow { display: none; }
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Scroll Progress -->
-    <div class="scroll-progress"></div>
 
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-brand">S. DE</div>
-        <ul class="nav-links">
-            <li><a href="#about">About</a></li>
-            <li><a href="#research">Research</a></li>
-            <li><a href="#publications">Publications</a></li>
-            <li><a href="#awards">Awards</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="nav-email">sachinandan@gmail.com</div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-name">SACHINANDAN DE</h1>
-            <h2 class="hero-title">NATIONAL PROFESSOR</h2>
-            <div class="hero-institution">NDRI KARNAL</div>
-            <p class="hero-description">
-                Distinguished researcher in animal biotechnology with over three decades of excellence in teaching, research, and innovation. Pioneering work in molecular immunology, genomics, and antimicrobial resistance with 168+ peer-reviewed publications and multiple patents.
-            </p>
-            <div class="social-links">
-                <a href="https://scholar.google.com" target="_blank" class="social-link" aria-label="Google Scholar">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 24c-1.66 0-3-.3-4.02-.89l1.18-1.77c.78.36 1.68.54 2.84.54 2.28 0 3.96-.96 4.74-2.7H12v-2.22h7.32c.06.42.12.84.12 1.38 0 3.18-1.62 6.66-7.44 6.66zM5.88 14.4l-1.8 1.08c-.84-1.56-1.32-3.3-1.32-5.16C2.76 5.04 6.9.9 12 .9c2.46 0 4.68.9 6.42 2.4l-1.68 1.68C15.6 3.96 14.1 3.3 12 3.3c-3.54 0-6.42 2.88-6.42 6.42 0 1.74.72 3.36 1.86 4.68h.42z"/>
-                    </svg>
-                </a>
-                <a href="https://www.researchgate.net" target="_blank" class="social-link" aria-label="ResearchGate">
-                    <svg viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm-1.59 14.24c0 .28-.03.52-.1.72-.07.21-.17.38-.31.52-.14.14-.32.25-.54.33-.22.08-.48.12-.78.12-.3 0-.56-.04-.78-.12-.22-.08-.4-.19-.54-.33-.14-.14-.25-.31-.31-.52-.07-.2-.1-.44-.1-.72v-4.48c0-.28.03-.52.1-.72.06-.2.17-.37.31-.51.14-.14.32-.25.54-.33.22-.08.48-.12.78-.12.3 0 .56.04.78.12.22.08.4.19.54.33.14.14.24.31.31.51.07.2.1.44.1.72v4.48zm6.27-4.38c-.47-.29-1.07-.43-1.8-.43-.43 0-.82.06-1.17.17-.35.11-.64.27-.87.47v-.41h-1.32v7.68h1.32v-2.76c.23.18.52.32.87.42.35.1.72.15 1.1.15.42 0 .81-.07 1.16-.2.35-.13.65-.32.9-.57.25-.24.45-.54.59-.89.14-.35.21-.75.21-1.2v-1.73c0-.45-.07-.85-.21-1.2-.14-.35-.34-.65-.59-.89-.25-.25-.55-.44-.9-.57z"/>
-                    </svg>
-                </a>
-            </div>
-            <div class="hero-image-wrapper">
-                <div class="hero-image">S.D.</div>
-            </div>
-        </div>
-        <div class="scroll-indicator" onclick="document.getElementById('about').scrollIntoView()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-            </svg>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section class="about" id="about">
-        <div class="section-title">ABOUT</div>
-        <div class="about-content">
-            <p>
-                Dr. Sachinandan De serves as National Professor in the Animal Biotechnology Division at the National Dairy Research Institute, Karnal, Haryana. His distinguished career spans over 30 years of groundbreaking research, education, and innovation in the field of animal biotechnology.
-            </p>
-            <p>
-                His research encompasses molecular immunology, animal genomics, DNA and PCR-based genomic technologies, ruminant immunology, and antimicrobial resistance. He has published over 168 peer-reviewed international publications and has been granted three Indian patents for innovative biotechnological solutions.
-            </p>
-            <p>
-                Dr. De has developed five PCR and DNA-based technologies for dairy and animal sciences, streamlined PCR techniques for mutation identification, and pioneered simple DNA isolation processes for genomic research. His work on antimicrobial resistance has contributed significantly to understanding bacterial AMR pathogen transmission through the food chain.
-            </p>
-        </div>
-    </section>
-
-    <!-- Stats Section -->
-    <div class="stats">
-        <div class="stat-item">
-            <span class="stat-number" data-target="32">0</span>
-            <span class="stat-label">Years Experience</span>
-        </div>
-        <div class="stat-item">
-            <span class="stat-number" data-target="168">0</span>
-            <span class="stat-label">Publications</span>
-        </div>
-        <div class="stat-item">
-            <span class="stat-number" data-target="22">0</span>
-            <span class="stat-label">Funded Projects</span>
-        </div>
-        <div class="stat-item">
-            <span class="stat-number" data-target="40">0</span>
-            <span class="stat-label">Students Supervised</span>
-        </div>
+    <!-- Loading Overlay -->
+    <div class="loader">
+        <div class="loader-text">Loading Profile...</div>
     </div>
 
-    <!-- Research Section -->
-    <section class="research" id="research">
-        <div class="section-title">RESEARCH & PROJECTS</div>
-        <div class="research-grid">
-            <div class="research-card">
-                <div class="research-meta">DBT Funded · 2012-2015</div>
-                <h3>Genetic Diversity and Haplotyping of Innate Immune Genes</h3>
-                <p>
-                    Comprehensive analysis of innate immune gene diversity in Indian cattle and buffalo populations, contributing to improved disease resistance breeding strategies.
-                </p>
-            </div>
-            <div class="research-card">
-                <div class="research-meta">ICAR National Professor · 2024-2028</div>
-                <h3>Harnessing Ruminant Immunity for Practical Application</h3>
-                <p>
-                    Current flagship project focused on translating fundamental immunological research into practical applications for enhancing animal health and productivity.
-                </p>
-            </div>
-            <div class="research-card">
-                <div class="research-meta">DST SERB · 2019-2022</div>
-                <h3>Mastitis Related Antibiotic Resistance Pattern Mapping</h3>
-                <p>
-                    Epidemiological study mapping antimicrobial resistance patterns in mastitis-causing bacteria across three districts of Haryana.
-                </p>
-            </div>
-            <div class="research-card">
-                <div class="research-meta">DBT Funded · 2012-2014</div>
-                <h3>Buffalo Genome Information Resource</h3>
-                <p>
-                    Development of comprehensive genomic databases and resources for buffalo, advancing molecular breeding and genetic improvement programs.
-                </p>
-            </div>
-            <div class="research-card">
-                <div class="research-meta">NAIP · 2007-2012</div>
-                <h3>Genomic Regulation of Follicular Development in Buffalo</h3>
-                <p>
-                    Elucidating physiological and genomic processes controlling oocyte maturation and embryogenesis to improve reproductive efficiency.
-                </p>
-            </div>
-            <div class="research-card">
-                <div class="research-meta">NASF · 2021-2023</div>
-                <h3>CRISPR-Based Production of Double Muscled Farm Animals</h3>
-                <p>
-                    Cutting-edge gene editing research aimed at enhancing meat production through targeted genomic modifications using CRISPR technology.
-                </p>
-            </div>
-        </div>
-    </section>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
 
-    <!-- Publications Section -->
-    <section class="publications" id="publications">
-        <div class="section-title">TOP CITED PUBLICATIONS</div>
-        <div class="publications-grid">
-            <div></div>
-            <div class="publications-list">
-                <div class="publication-item">
-                    <div class="publication-header">
-                        <div class="publication-title">
-                            Interferon-tau stimulated gene expression: A proxy to predict embryonic mortality in dairy cows
-                        </div>
-                        <div class="citation-badge">44 CITATIONS</div>
-                    </div>
-                    <div class="publication-meta">
-                        Theriogenology
-                        <span class="publication-year">2018</span>
+    <!-- Navigation -->
+    <nav class="navbar fade-in-down">
+        <div class="nav-left">
+            <a href="#" class="brand">S. De <span class="phd">PH.D</span></a>
+        </div>
+        <div class="nav-center">
+            <a href="#about" class="nav-link">About</a>
+            <a href="#research" class="nav-link">Research</a>
+            <a href="#projects" class="nav-link">Projects</a>
+            <a href="#publications" class="nav-link">Publications</a>
+            <a href="#contact" class="nav-link">Contact</a>
+        </div>
+        <div class="nav-right">
+            <a href="mailto:sachinandan@gmail.com" class="email-link">sachinandan@gmail.com</a>
+        </div>
+    </nav>
+
+    <main>
+        
+        <!-- Hero Section -->
+        <section class="hero-split">
+            <!-- Left Column: Content -->
+            <div class="hero-content">
+                <div class="hero-header-group">
+                    <h1 class="hero-title split-text">
+                        <div>NATIONAL</div>
+                        <div>PROFESSOR</div>
+                    </h1>
+                    <h2 class="hero-name split-text">
+                        <div>SACHINANDAN</div>
+                        <div>DE</div>
+                    </h2>
+                </div>
+                
+                <div class="hero-bio fade-in-up">
+                    <p>
+                        Distinguished scientist in Animal Biotechnology & Genomics at NDRI. 
+                        Building robust genetic resources and immunological solutions for 
+                        sustainable dairy architecture.
+                    </p>
+                    
+                    <div class="hero-actions">
+                         <a href="#about" class="btn-main">View Full Biography</a>
+                         <a href="#research" class="btn-text">Core Research &darr;</a>
                     </div>
                 </div>
-                <div class="publication-item">
-                    <div class="publication-header">
-                        <div class="publication-title">
-                            Deciphering the ATP-binding mechanism(s) in NLRP-NACHT 3D models using structural bioinformatics approaches
-                        </div>
-                        <div class="citation-badge">34 CITATIONS</div>
+
+                <!-- Stats -->
+                <div class="hero-stats fade-in-up">
+                    <div class="h-stat">
+                        <span class="hs-num">35+</span>
+                        <span class="hs-label">Years Exp.</span>
                     </div>
-                    <div class="publication-meta">
-                        PLOS ONE
-                        <span class="publication-year">2018</span>
+                    <div class="h-stat">
+                        <span class="hs-num">168+</span>
+                        <span class="hs-label">Publications</span>
                     </div>
-                </div>
-                <div class="publication-item">
-                    <div class="publication-header">
-                        <div class="publication-title">
-                            Antibiotic resistance: a cross-sectional study on knowledge, attitude, and practices among veterinarians of Haryana state in India
-                        </div>
-                        <div class="citation-badge">29 CITATIONS</div>
-                    </div>
-                    <div class="publication-meta">
-                        Veterinary World
-                        <span class="publication-year">2019</span>
+                    <div class="h-stat">
+                        <span class="hs-num">20+</span>
+                        <span class="hs-label">PhD Scholars</span>
                     </div>
                 </div>
-                <div class="publication-item">
-                    <div class="publication-header">
-                        <div class="publication-title">
-                            Global epidemiology of CTX-M-type β-lactam resistance in human and animal
+            </div>
+
+            <!-- Right Column: Image -->
+            <div class="hero-visual reveal-image">
+                <div class="image-wrapper">
+                    <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1200&auto=format&fit=crop" alt="Professor Sachinandan De" class="portrait-img">
+                </div>
+                <div class="visual-caption">
+                    <span>EST. 1987</span>
+                    <span>NDRI KARNAL</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="content-section border-top">
+            <div class="section-header fade-in-up">
+                <span class="section-label">(01)</span>
+                <h3 class="section-title">PROFILE & JOURNEY</h3>
+            </div>
+            
+            <div class="bio-grid fade-in-up">
+                <div class="bio-text">
+                    <p>With over 35 years in Animal Biotechnology, I have dedicated my career to understanding the genomic architecture of Indian livestock. From my early days at BCKV to my current role as National Professor at NDRI, my focus has remained constant: rigorous science for sustainable agriculture.</p>
+                    <p>My work involves characterizing genetic diversity, developing simple field-deployable DNA isolation processes, and understanding the molecular basis of innate immunity in large animals. I have also been deeply involved in mitigating antimicrobial resistance, tracing pathogen transmission from animal to human food chains.</p>
+                </div>
+                
+                <div class="education-list">
+                    <div class="pub-item" style="border-top: 1px solid var(--border-color);">
+                        <div class="pub-year">2000</div>
+                        <div class="pub-info">
+                            <h5 class="pub-title">Ph.D. ANIMAL BIOTECHNOLOGY</h5>
+                            <p class="pub-journal">IVRI, Uttar Pradesh. First Class with Distinction.</p>
                         </div>
-                        <div class="citation-badge">19 CITATIONS</div>
                     </div>
-                    <div class="publication-meta">
-                        Comparative Immunology, Microbiology and Infectious Diseases
-                        <span class="publication-year">2022</span>
+                    <div class="pub-item">
+                        <div class="pub-year">1991</div>
+                        <div class="pub-info">
+                            <h5 class="pub-title">M.V.Sc.</h5>
+                            <p class="pub-journal">IVRI, Uttar Pradesh. First Class.</p>
+                        </div>
+                    </div>
+                    <div class="pub-item">
+                        <div class="pub-year">1987</div>
+                        <div class="pub-info">
+                            <h5 class="pub-title">B.V.Sc. & AH</h5>
+                            <p class="pub-journal">BCKV, West Bengal. First Class.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="publication-item">
-                    <div class="publication-header">
-                        <div class="publication-title">
-                            Virulence and enterotoxin gene profile of methicillin-resistant Staphylococcus aureus isolates from bovine mastitis
-                        </div>
-                        <div class="citation-badge">18 CITATIONS</div>
-                    </div>
-                    <div class="publication-meta">
-                        Comparative Immunology, Microbiology and Infectious Diseases
-                        <span class="publication-year">2022</span>
+            </div>
+
+            <div class="section-header fade-in-up">
+                <span class="section-label">(AWARDS)</span>
+                <h3 class="section-title">HONORS</h3>
+            </div>
+            
+            <div class="pub-list fade-in-up">
+                <div class="pub-item">
+                    <div class="pub-year">2023</div>
+                    <div class="pub-info"><h5 class="pub-title">FELLOW OF NAVS</h5><p class="pub-journal">National Academy of Veterinary Sciences</p></div>
+                </div>
+                <div class="pub-item">
+                    <div class="pub-year">2022</div>
+                    <div class="pub-info"><h5 class="pub-title">FELLOW OF NAAS</h5><p class="pub-journal">National Academy of Agricultural Sciences</p></div>
+                </div>
+                <div class="pub-item">
+                    <div class="pub-year">2020</div>
+                    <div class="pub-info"><h5 class="pub-title">FELLOW OF ISVIB</h5><p class="pub-journal">Indian Society for Veterinary Immunology</p></div>
+                </div>
+                <div class="pub-item">
+                    <div class="pub-year">2008</div>
+                    <div class="pub-info"><h5 class="pub-title">DBT OVERSEAS FELLOWSHIP</h5><p class="pub-journal">Uppsala University, Sweden</p></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Research Section -->
+        <section id="research" class="content-section border-top">
+            <div class="section-header fade-in-up">
+                <span class="section-label">(02)</span>
+                <h3 class="section-title">RESEARCH AREAS</h3>
+            </div>
+            
+            <div class="research-grid">
+                <div class="research-card fade-in-up">
+                    <h4 class="card-title">GENOMICS & DIVERSITY</h4>
+                    <p class="card-text">
+                        Studying genetic diversity in Indian cattle and buffalo. Key work involves haplotyping innate immune genes and developing genome information resources to support breeding programs.
+                    </p>
+                </div>
+                <div class="research-card fade-in-up" style="transition-delay: 0.1s">
+                    <h4 class="card-title">RUMINANT IMMUNOLOGY</h4>
+                    <p class="card-text">
+                        Deciphering the molecular basis of innate immunity. Researching DNA and RNA sensors in animal cells and developing fecundity vaccines.
+                    </p>
+                </div>
+                <div class="research-card fade-in-up" style="transition-delay: 0.2s">
+                    <h4 class="card-title">AMR MITIGATION</h4>
+                    <p class="card-text">
+                        Understanding how bacterial AMR pathogens move from animal to human food chains. Developing therapeutic approaches against MRSA and mapping resistance patterns.
+                    </p>
+                </div>
+            </div>
+
+            <div class="section-header fade-in-up" style="margin-top: 6rem;">
+                <span class="section-label">(TECH)</span>
+                <h3 class="section-title">PATENTS</h3>
+            </div>
+            
+            <div class="pub-list">
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">NO. 257958</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">PCR based method for differentiating Cow and Buffalo milk.</h5>
+                        <p class="pub-journal">Technology transferred to A2 Milk Research Corp & Manorama Agrobiotech.</p>
                     </div>
                 </div>
-                <a href="https://scholar.google.com" target="_blank" class="see-more-btn">
-                    View All 168 Publications
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">NO. 258646</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">A non-invasive DNA isolation methodology in Dairy Animals.</h5>
+                        <p class="pub-journal">Awarded 2014.</p>
+                    </div>
+                </div>
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">NO. 511469</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">Mutant strain of Kluyveromyces marxianus for enhanced galactose utilization.</h5>
+                        <p class="pub-journal">Granted 2024.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="content-section border-top">
+            <div class="section-header fade-in-up">
+                <span class="section-label">(03)</span>
+                <h3 class="section-title">FUNDED INITIATIVES</h3>
+            </div>
+            
+            <div class="research-grid">
+                <div class="research-card fade-in-up">
+                    <h4 class="card-title">RUMINANT IMMUNITY</h4>
+                    <p class="card-text" style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700;">ICAR NATIONAL PROFESSOR | 2024-2028</p>
+                    <p class="card-text">Harnessing Ruminant Immunity for Practical Application. Principal Investigator.</p>
+                </div>
+
+                <div class="research-card fade-in-up">
+                    <h4 class="card-title">AMR SURVEILLANCE</h4>
+                    <p class="card-text" style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700;">ICMR | 2022-2024</p>
+                    <p class="card-text">Antimicrobial resistance surveillance in view of one health concept. Co-PI.</p>
+                </div>
+
+                <div class="research-card fade-in-up">
+                    <h4 class="card-title">CRISPR GENE EDITING</h4>
+                    <p class="card-text" style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700;">NASF | 2021-2023</p>
+                    <p class="card-text">Production of double muscled mass farm animal using CRISPR. Co-PI.</p>
+                </div>
+
+                <div class="research-card fade-in-up">
+                    <h4 class="card-title">MASTITIS MAPPING</h4>
+                    <p class="card-text" style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700;">SERB/DST | 2019-2022</p>
+                    <p class="card-text">Mastitis related antibiotic resistance pattern mapping in three districts of Haryana. PI.</p>
+                </div>
+
+                <div class="research-card fade-in-up">
+                    <h4 class="card-title">GENETIC DIVERSITY</h4>
+                    <p class="card-text" style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700;">DBT | 2012-2015</p>
+                    <p class="card-text">Haplotyping of Innate Immune genes in Indian Cattle and Buffalo. PI.</p>
+                </div>
+
+                <div class="research-card fade-in-up">
+                    <h4 class="card-title">BUFFALO GENOME</h4>
+                    <p class="card-text" style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700;">DBT | 2012-2014</p>
+                    <p class="card-text">Buffalo Genome Information Resource. Principal Investigator.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Publications Section -->
+        <section id="publications" class="content-section border-top">
+            <div class="section-header fade-in-up">
+                <span class="section-label">(04)</span>
+                <h3 class="section-title">FULL BIBLIOGRAPHY</h3>
+            </div>
+
+            <!-- 2025 -->
+            <div class="pub-list">
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">2025</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">Field validation of an in-house epitope-specific ELISA for age-specific profiling of anti-müllerian hormone.</h5>
+                        <p class="pub-journal">Pal et al. Proceedings of the Indian National Science Academy.</p>
+                    </div>
+                </div>
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">2025</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">Genetic comparison of virulence and resistance factors in phylogenetically diverse Escherichia coli.</h5>
+                        <p class="pub-journal">Narwal et al. Science of The Total Environment.</p>
+                    </div>
+                </div>
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">2025</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">Activity of GS-linked chimeric endolysin CHAPk-SH3bk against methicillin-resistant Staphylococcus aureus biofilms.</h5>
+                        <p class="pub-journal">Behera et al. npj Biofilms and Microbiomes.</p>
+                    </div>
+                </div>
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">2025</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">The synergistic and chimeric mechanism of bacteriophage endolysins: opportunities for application in biotherapeutics.</h5>
+                        <p class="pub-journal">Behera et al. Probiotics and Antimicrobial Proteins.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2024 -->
+            <div class="section-header fade-in-up" style="margin-top: 4rem;">
+                <span class="section-label">(2024)</span>
+            </div>
+            <div class="pub-list">
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">2024</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">Expression and characterization of novel chimeric endolysin CHAPK-SH3bk against biofilm-forming MRSA.</h5>
+                        <p class="pub-journal">Behera et al. Int J Biol Macromol.</p>
+                    </div>
+                </div>
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">2024</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">Antimicrobial and antibiofilm effect of cannabinoids from Cannabis sativa against MRSA causing bovine mastitis.</h5>
+                        <p class="pub-journal">Roshan et al. International Microbiology.</p>
+                    </div>
+                </div>
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">2024</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">Characterization and expression profiling of buffalo IFN-lambda family.</h5>
+                        <p class="pub-journal">Gautam et al. Veterinary Immunology and Immunopathology.</p>
+                    </div>
+                </div>
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">2024</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">Evolutionary insights of interferon lambda genes in tetrapods.</h5>
+                        <p class="pub-journal">Gautam et al. Journal of Evolutionary Biology.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2023 -->
+            <div class="section-header fade-in-up" style="margin-top: 4rem;">
+                <span class="section-label">(2023)</span>
+            </div>
+            <div class="pub-list">
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">2023</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">Development of B cell epitopes-based enzyme linked immune sorbent assay for detection of bovine anti-Mullerian hormone.</h5>
+                        <p class="pub-journal">Pal et al. 3 Biotech.</p>
+                    </div>
+                </div>
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">2023</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">Evaluation of Virulence, Antimicrobial Resistance and Biofilm Forming Potential of MRSA.</h5>
+                        <p class="pub-journal">Singh et al. Current Microbiology.</p>
+                    </div>
+                </div>
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">2023</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">Adaptive Selection in the Evolution of Aquaglyceroporins in Mammals.</h5>
+                        <p class="pub-journal">Rajput et al. Journal of Molecular Evolution.</p>
+                    </div>
+                </div>
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">2023</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">Poly (I: C), a double stranded RNA analog, activates the anti-viral DNA sensors in buffalo fibroblasts.</h5>
+                        <p class="pub-journal">Chera et al. Veterinary Vaccine.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 2022 -->
+            <div class="section-header fade-in-up" style="margin-top: 4rem;">
+                <span class="section-label">(2022)</span>
+            </div>
+            <div class="pub-list">
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">2022</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">Development of gold nanoparticle-based visual assay for rapid detection of Escherichia coli specific DNA in milk.</h5>
+                        <p class="pub-journal">Deb et al. LWT food science and technology.</p>
+                    </div>
+                </div>
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">2022</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">CRISPR/Cas9 cassette targeting Escherichia coli blaCTX-M specific gene of mastitis cow milk origin.</h5>
+                        <p class="pub-journal">Deb et al. Animal Biotechnology.</p>
+                    </div>
+                </div>
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">2022</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">Global epidemiology of CTX-M-type B-lactam resistance in human and animal.</h5>
+                        <p class="pub-journal">Rana et al. Comparative Immunology, Microbiology and Infectious Diseases.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="content-section border-top">
+            <div class="contact-hero">
+                <p class="section-label" style="text-align: center; margin-bottom: 2rem;">GET IN TOUCH</p>
+                <a href="mailto:sachinandan@gmail.com" class="contact-email-large">
+                    sachinandan@gmail.com
                 </a>
             </div>
-        </div>
-    </section>
-
-    <!-- Awards Section -->
-    <section class="awards" id="awards">
-        <div class="section-title">AWARDS & FELLOWSHIPS</div>
-        <div class="awards-grid">
-            <div></div>
-            <div class="awards-list">
-                <div class="award-item">
-                    <div class="award-title">Fellow of National Academy of Agricultural Sciences</div>
-                    <div class="award-org">National Academy of Agricultural Sciences (NAAS), New Delhi</div>
-                    <div class="award-year">2022</div>
+            
+            <div class="research-grid">
+                <div class="research-card fade-in-up">
+                    <h4 class="card-title">LOCATION</h4>
+                    <p class="card-text">
+                        National Dairy Research Institute (ICAR-NDRI)<br>
+                        Animal Biotechnology Division<br>
+                        Karnal, Haryana - 132001<br>
+                        India
+                    </p>
                 </div>
-                <div class="award-item">
-                    <div class="award-title">Fellow of National Academy of Veterinary Sciences</div>
-                    <div class="award-org">National Academy of Veterinary Sciences (NAVS), New Delhi</div>
-                    <div class="award-year">2023</div>
+                <div class="research-card fade-in-up">
+                    <h4 class="card-title">NETWORKS</h4>
+                    <p class="card-text">
+                        <a href="#" class="card-link">Google Scholar</a><br>
+                        <a href="#" class="card-link">ORCID</a><br>
+                        <a href="#" class="card-link">ResearchGate</a>
+                    </p>
                 </div>
-                <div class="award-item">
-                    <div class="award-title">Lifetime Achievement Award</div>
-                    <div class="award-org">Society for Bioinformatics and Biological Sciences (SBBS)</div>
-                    <div class="award-year">2022</div>
-                </div>
-                <div class="award-item">
-                    <div class="award-title">Fellow of Indian Society for Veterinary Immunology and Biotechnology</div>
-                    <div class="award-org">ISVIB</div>
-                    <div class="award-year">2020</div>
-                </div>
-                <div class="award-item">
-                    <div class="award-title">Fellow of National Academy of Dairy Science</div>
-                    <div class="award-org">National Academy of Dairy Sciences (NADS), NDRI Karnal</div>
-                    <div class="award-year">2016</div>
-                </div>
-                <div class="award-item">
-                    <div class="award-title">DBT Short Term Overseas Fellowship</div>
-                    <div class="award-org">Department of Biotechnology, Uppsala University, Sweden</div>
-                    <div class="award-year">2008</div>
+                <div class="research-card fade-in-up">
+                    <h4 class="card-title">OFFICE</h4>
+                    <p class="card-text">
+                        Department of Animal Biotechnology<br>
+                        Academic Block II<br>
+                        NDRI Campus
+                    </p>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Contact Section -->
-    <section class="contact" id="contact">
-        <div class="contact-grid">
-            <div class="section-title">CONTACT</div>
-            <div class="contact-info">
-                <div class="contact-item">
-                    <h3>Email</h3>
-                    <p><a href="mailto:sachinandan@gmail.com">sachinandan@gmail.com</a></p>
+        <!-- Footer -->
+        <footer class="site-footer border-top">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <span>S. De</span>
+                    <span class="phd">PH.D</span>
                 </div>
-                <div class="contact-item">
-                    <h3>Institution</h3>
+                <div class="footer-contact">
                     <p>National Dairy Research Institute</p>
                     <p>Karnal, Haryana, India</p>
+                    <br>
+                    <a href="mailto:sachinandan@gmail.com" class="footer-email">sachinandan@gmail.com</a>
                 </div>
-                <div class="contact-item">
-                    <h3>Position</h3>
-                    <p>National Professor</p>
-                    <p>Animal Biotechnology Division</p>
+                <div class="footer-social">
+                    <a href="#">Google Scholar</a>
+                    <a href="#">ORCID</a>
+                    <a href="#">ResearchGate</a>
                 </div>
-                <div class="contact-item">
-                    <h3>Research Profiles</h3>
-                    <p><a href="#" target="_blank">Google Scholar</a></p>
-                    <p><a href="#" target="_blank">ResearchGate</a></p>
+                <div class="footer-copy">
+                    &copy; 2026 Sachinandan De
                 </div>
             </div>
-        </div>
-    </section>
+        </footer>
 
-    <!-- Footer -->
-    <footer>
-        <div>&copy; 2026 Sachinandan De. All rights reserved.</div>
-        <div>National Professor, NDRI Karnal</div>
-    </footer>
+    </main>
 
     <script>
-        // Scroll Progress
-        window.addEventListener('scroll', () => {
-            const scrollProgress = document.querySelector('.scroll-progress');
-            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            const scrolled = (window.scrollY / windowHeight) * 100;
-            scrollProgress.style.width = scrolled + '%';
-        });
-
-        // Intersection Observer for sections
-        const observerOptions = {
-            threshold: 0.15,
-            rootMargin: '0px 0px -100px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('section').forEach(section => {
-            observer.observe(section);
-        });
-
-        // Publication items animation with stagger
-        const publicationObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const items = entry.target.querySelectorAll('.publication-item');
-                    items.forEach((item, index) => {
-                        setTimeout(() => {
-                            item.classList.add('visible');
-                        }, index * 150);
-                    });
-                    publicationObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        const publicationsList = document.querySelector('.publications-list');
-        if (publicationsList) {
-            publicationObserver.observe(publicationsList);
-        }
-
-        // Research cards stagger animation
-        const researchObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const cards = entry.target.querySelectorAll('.research-card');
-                    cards.forEach((card, index) => {
-                        setTimeout(() => {
-                            card.style.opacity = '1';
-                            card.style.transform = 'translateY(0)';
-                        }, index * 100);
-                    });
-                    researchObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        const researchGrid = document.querySelector('.research-grid');
-        if (researchGrid) {
-            // Set initial state
-            document.querySelectorAll('.research-card').forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(50px)';
-                card.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
-            });
-            researchObserver.observe(researchGrid);
-        }
-
-        // Counter animation for stats
-        const statsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const counters = entry.target.querySelectorAll('.stat-number');
-                    counters.forEach(counter => {
-                        const target = parseInt(counter.getAttribute('data-target'));
-                        const duration = 2000;
-                        const step = target / (duration / 16);
-                        let current = 0;
-
-                        const updateCounter = () => {
-                            current += step;
-                            if (current < target) {
-                                counter.textContent = Math.floor(current);
-                                requestAnimationFrame(updateCounter);
-                            } else {
-                                counter.textContent = target + '+';
-                            }
-                        };
-
-                        updateCounter();
-                    });
-                    statsObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        const statsSection = document.querySelector('.stats');
-        if (statsSection) {
-            statsObserver.observe(statsSection);
-        }
-
-        // Smooth scroll for navigation
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Parallax effect for hero image
-        let ticking = false;
-        window.addEventListener('scroll', () => {
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    const scrolled = window.pageYOffset;
-                    const heroImage = document.querySelector('.hero-image-wrapper');
-                    if (heroImage && scrolled < window.innerHeight) {
-                        heroImage.style.transform = `translateY(${scrolled * 0.2}px) scale(1)`;
-                    }
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        });
-
-        // Navbar background on scroll
-        let lastScroll = 0;
-        window.addEventListener('scroll', () => {
-            const nav = document.querySelector('nav');
-            const currentScroll = window.pageYOffset;
+        document.addEventListener('DOMContentLoaded', () => {
             
-            if (currentScroll > 100) {
-                nav.style.background = 'rgba(243, 241, 237, 0.98)';
-                nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.05)';
-            } else {
-                nav.style.background = 'rgba(243, 241, 237, 0.95)';
-                nav.style.boxShadow = 'none';
-            }
-            
-            lastScroll = currentScroll;
-        });
-
-        // Add reveal animation to awards
-        const awardsObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    const items = entry.target.querySelectorAll('.award-item');
-                    items.forEach((item, index) => {
-                        setTimeout(() => {
-                            item.style.opacity = '1';
-                            item.style.transform = 'translateX(0)';
-                        }, index * 100);
-                    });
-                    awardsObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-
-        const awardsList = document.querySelector('.awards-list');
-        if (awardsList) {
-            document.querySelectorAll('.award-item').forEach(item => {
-                item.style.opacity = '0';
-                item.style.transform = 'translateX(-30px)';
-                item.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
-            });
-            awardsObserver.observe(awardsList);
-        }
-
-        // Page load animation
-        window.addEventListener('load', () => {
-            document.body.style.opacity = '0';
+            // --- 1. LOADER ---
+            const loader = document.querySelector('.loader');
             setTimeout(() => {
-                document.body.style.transition = 'opacity 0.6s ease';
-                document.body.style.opacity = '1';
-            }, 100);
+                loader.classList.add('hidden');
+                initAnimations(); 
+            }, 1000); 
+
+            // --- 2. CUSTOM CURSOR ---
+            const cursorDot = document.querySelector('.cursor-dot');
+            const cursorOutline = document.querySelector('.cursor-outline');
+
+            // Only activate custom cursor on desktop to prevent issues on touch devices
+            if (window.matchMedia("(pointer: fine)").matches) {
+                window.addEventListener('mousemove', (e) => {
+                    const posX = e.clientX;
+                    const posY = e.clientY;
+
+                    // Dot follows immediately
+                    cursorDot.style.left = `${posX}px`;
+                    cursorDot.style.top = `${posY}px`;
+
+                    // Outline follows with slight delay
+                    cursorOutline.animate({
+                        left: `${posX}px`,
+                        top: `${posY}px`
+                    }, { duration: 500, fill: "forwards" });
+                });
+            } else {
+                cursorDot.style.display = 'none';
+                cursorOutline.style.display = 'none';
+            }
+
+            // --- 3. TEXT SPLITTING UTILITY ---
+            const splitTextElements = document.querySelectorAll('.split-text div');
+            
+            splitTextElements.forEach(element => {
+                const text = element.innerText;
+                element.innerHTML = '';
+                text.split('').forEach((char, index) => {
+                    const span = document.createElement('span');
+                    span.innerText = char === ' ' ? '\u00A0' : char;
+                    span.classList.add('char');
+                    span.style.transitionDelay = `${index * 30}ms`;
+                    element.appendChild(span);
+                });
+            });
+
+            // --- 4. INTERSECTION OBSERVER ---
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.1
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        
+                        if (entry.target.classList.contains('split-text') || entry.target.closest('.split-text')) {
+                            const chars = entry.target.querySelectorAll('.char');
+                            chars.forEach(char => char.classList.add('visible'));
+                        }
+                        
+                        if (entry.target.classList.contains('fade-in-up') || entry.target.classList.contains('fade-in-down')) {
+                            entry.target.classList.add('visible');
+                        }
+
+                        if (entry.target.classList.contains('reveal-image')) {
+                            entry.target.classList.add('visible');
+                        }
+
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            function initAnimations() {
+                document.querySelectorAll('.split-text').forEach(el => observer.observe(el));
+                document.querySelectorAll('.fade-in-up, .fade-in-down').forEach(el => observer.observe(el));
+                document.querySelectorAll('.reveal-image').forEach(el => observer.observe(el));
+            }
+
+            // --- 5. PARALLAX EFFECT ---
+            const imageContainer = document.querySelector('.image-wrapper');
+            const image = document.querySelector('.portrait-img');
+
+            if (imageContainer && image && window.matchMedia("(pointer: fine)").matches) {
+                imageContainer.addEventListener('mousemove', (e) => {
+                    const { width, height, left, top } = imageContainer.getBoundingClientRect();
+                    const x = e.clientX - left;
+                    const y = e.clientY - top;
+                    const xPercent = x / width - 0.5;
+                    const yPercent = y / height - 0.5;
+
+                    image.style.transform = `scale(1.1) translate(${xPercent * 20}px, ${yPercent * 20}px)`;
+                });
+
+                imageContainer.addEventListener('mouseleave', () => {
+                    image.style.transform = `scale(1.0) translate(0, 0)`;
+                });
+            }
+
+            // --- 6. SMOOTH SCROLL ---
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
         });
     </script>
 </body>
