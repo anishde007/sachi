@@ -6,8 +6,8 @@
     <title>Sachinandan De | National Professor</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Fonts: Bodoni Moda (Display) & Nunito (Body) -->
-    <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
+    <!-- Fonts: Hanken Grotesk (Display) & Inter (Body) -->
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
     
     <style>
         /* --- CSS VARIABLES & RESET --- */
@@ -18,8 +18,8 @@
             --border-color: rgba(10, 10, 10, 0.15);
             
             /* Font Pairing - Updated */
-            --font-display: 'Bodoni Moda', serif;
-            --font-body: 'Nunito', sans-serif;
+            --font-display: 'Hanken Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
             
             --easing: cubic-bezier(0.19, 1, 0.22, 1);
         }
@@ -133,7 +133,7 @@
 
         .brand {
             font-family: var(--font-display);
-            font-weight: 800; /* Bold for Bodoni */
+            font-weight: 800; /* Bold for Hanken */
             text-transform: uppercase;
             letter-spacing: 0.05em;
             font-size: 1.2rem;
@@ -155,8 +155,8 @@
             font-family: var(--font-body);
             font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-weight: 700;
+            letter-spacing: 0.05em;
+            font-weight: 600;
             position: relative;
         }
 
@@ -214,7 +214,7 @@
             font-family: var(--font-display);
             font-size: clamp(3rem, 5.5vw, 6rem);
             line-height: 0.95;
-            font-weight: 800; /* Strong bold for Bodoni */
+            font-weight: 800; /* Strong bold for Hanken */
             text-transform: uppercase;
             letter-spacing: -0.03em;
             color: var(--text-color);
@@ -225,7 +225,7 @@
             -webkit-text-stroke: 0;
             margin-top: 10px;
             font-weight: 900; /* Even bolder */
-            font-style: italic; /* Bodoni italics are elegant */
+            font-style: normal; /* Hanken is cleaner upright */
         }
 
         .split-text div { overflow: hidden; }
@@ -237,7 +237,7 @@
 
         .hero-bio p {
             font-size: 1.15rem;
-            line-height: 1.7;
+            line-height: 1.6;
             font-weight: 400;
             margin-bottom: 2rem;
         }
@@ -253,7 +253,7 @@
             color: var(--bg-color);
             padding: 1rem 2rem;
             text-transform: uppercase;
-            font-weight: 800;
+            font-weight: 700;
             font-size: 0.85rem;
             letter-spacing: 0.05em;
             transition: transform 0.3s ease;
@@ -265,7 +265,7 @@
         }
 
         .btn-text {
-            font-weight: 700;
+            font-weight: 600;
             text-transform: uppercase;
             font-size: 0.85rem;
             border-bottom: 1px solid currentColor;
@@ -288,14 +288,14 @@
             font-family: var(--font-display);
             font-size: 2.5rem;
             font-weight: 700;
-            font-style: italic;
+            font-style: normal;
         }
 
         .hs-label {
             font-size: 0.75rem;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-weight: 700;
+            letter-spacing: 0.05em;
+            font-weight: 600;
             opacity: 0.7;
         }
 
@@ -340,8 +340,8 @@
             backdrop-filter: blur(5px);
             border-top: 1px solid var(--border-color);
             font-size: 0.75rem;
-            font-weight: 800;
-            letter-spacing: 0.1em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
         }
 
@@ -361,10 +361,9 @@
         .section-label {
             font-family: var(--font-display);
             font-size: 1rem;
-            font-weight: 700;
+            font-weight: 600;
             margin-right: 2rem;
             padding-top: 0.5rem;
-            font-style: italic;
         }
 
         .section-title {
@@ -385,7 +384,7 @@
         
         .bio-text p {
             font-size: 1.15rem;
-            line-height: 1.8;
+            line-height: 1.7;
             margin-bottom: 1.5rem;
             max-width: 800px;
         }
@@ -427,7 +426,7 @@
         .card-link {
             font-size: 0.85rem;
             text-transform: uppercase;
-            font-weight: 800;
+            font-weight: 700;
             letter-spacing: 0.05em;
             border-bottom: 1px solid currentColor;
             padding-bottom: 2px;
@@ -458,13 +457,12 @@
             font-weight: 800;
             font-size: 1.2rem;
             opacity: 0.8;
-            font-style: italic;
         }
 
         .pub-title {
             font-family: var(--font-body);
             font-size: 1.15rem;
-            font-weight: 700;
+            font-weight: 600;
             margin-bottom: 0.5rem;
             max-width: 800px;
             line-height: 1.4;
@@ -495,7 +493,6 @@
             letter-spacing: -0.02em;
             display: block;
             margin: 2rem 0;
-            font-style: italic;
         }
 
         /* --- FOOTER --- */
