@@ -6,7 +6,7 @@
     <title>Sachinandan De - National Professor</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         * {
@@ -29,11 +29,53 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Manrope', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--text-primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.15s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-follower {
+            width: 8px;
+            height: 8px;
+            background: var(--text-primary);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.2s ease;
+        }
+
+        .cursor.expand {
+            transform: scale(2);
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Scroll Progress */
+        .scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--text-primary);
+            width: 0%;
+            z-index: 9999;
+            transition: width 0.1s ease;
         }
 
         /* Navbar */
@@ -106,10 +148,12 @@
             min-height: 100vh;
             padding: 10rem 4rem 4rem;
             display: grid;
-            grid-template-columns: 1.5fr 1fr;
-            gap: 4rem;
-            align-items: center;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 6rem;
+            align-items: start;
             position: relative;
+            max-width: 1600px;
+            margin: 0 auto;
         }
 
         .hero-content {
@@ -119,10 +163,10 @@
         }
 
         .hero-title {
-            font-size: clamp(3rem, 8vw, 7rem);
-            font-weight: 900;
-            line-height: 0.95;
-            letter-spacing: -0.02em;
+            font-size: clamp(3rem, 7vw, 6.5rem);
+            font-weight: 800;
+            line-height: 0.9;
+            letter-spacing: -0.03em;
             text-transform: uppercase;
             overflow: hidden;
         }
@@ -130,18 +174,18 @@
         .hero-title span {
             display: block;
             opacity: 0;
-            transform: translateY(100%);
-            animation: slideUp 1s ease forwards;
+            transform: translateY(120%) rotateX(-90deg);
+            animation: slideUpRotate 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        .hero-title span:nth-child(1) { animation-delay: 0.1s; }
-        .hero-title span:nth-child(2) { animation-delay: 0.3s; }
-        .hero-title span:nth-child(3) { animation-delay: 0.5s; }
+        .hero-title span:nth-child(1) { animation-delay: 0.2s; }
+        .hero-title span:nth-child(2) { animation-delay: 0.4s; }
+        .hero-title span:nth-child(3) { animation-delay: 0.6s; }
 
-        @keyframes slideUp {
+        @keyframes slideUpRotate {
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) rotateX(0);
             }
         }
 
@@ -150,40 +194,109 @@
             line-height: 1.8;
             color: var(--text-secondary);
             max-width: 600px;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            font-weight: 400;
+            font-weight: 500;
             opacity: 0;
-            animation: fadeIn 1s ease 0.8s forwards;
+            animation: fadeInUp 1s ease 1s forwards;
         }
 
-        @keyframes fadeIn {
-            to { opacity: 1; }
+        @keyframes fadeInUp {
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                transform: translateY(20px);
+            }
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 1.2s forwards;
+        }
+
+        .social-link {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--text-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--text-primary);
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .social-link:hover {
+            transform: translateY(-5px);
+        }
+
+        .social-link:hover::before {
+            transform: translateY(0);
+        }
+
+        .social-link svg {
+            width: 22px;
+            height: 22px;
+            position: relative;
+            z-index: 1;
+            transition: all 0.4s ease;
+        }
+
+        .social-link:hover svg {
+            fill: var(--bg-primary);
+            stroke: var(--bg-primary);
         }
 
         .hero-side {
             display: flex;
             flex-direction: column;
-            align-items: flex-end;
-            gap: 4rem;
+            gap: 3rem;
             position: relative;
+            max-width: 100%;
         }
 
         .hero-name {
-            font-size: clamp(2rem, 5vw, 4.5rem);
-            font-weight: 900;
-            line-height: 1;
-            text-align: right;
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.1;
             letter-spacing: -0.02em;
-            writing-mode: horizontal-tb;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.8s forwards;
         }
 
         .hero-image-wrapper {
             position: relative;
             width: 100%;
-            max-width: 400px;
+            max-width: 350px;
             opacity: 0;
-            animation: fadeIn 1s ease 1s forwards;
+            animation: scaleIn 1.2s cubic-bezier(0.16, 1, 0.3, 1) 1s forwards;
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
 
         .hero-image {
@@ -191,12 +304,22 @@
             aspect-ratio: 3/4;
             border-radius: 20px;
             object-fit: cover;
-            background: var(--divider);
+            background: linear-gradient(135deg, #e8e6e1 0%, #d4d2cd 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 5rem;
+            font-size: 4rem;
+            font-weight: 800;
             color: var(--text-secondary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-image::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.05) 100%);
         }
 
         .scroll-indicator {
@@ -211,26 +334,50 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            animation: bounce 2s ease infinite;
+            animation: bounceRotate 3s ease infinite;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+        .scroll-indicator:hover {
+            transform: scale(1.1);
+            background: var(--text-primary);
+        }
+
+        .scroll-indicator:hover svg {
+            stroke: var(--bg-primary);
+        }
+
+        @keyframes bounceRotate {
+            0%, 100% { 
+                transform: translateY(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-10px) rotate(5deg);
+            }
+            50% { 
+                transform: translateY(0) rotate(0deg);
+            }
+            75% {
+                transform: translateY(-5px) rotate(-5deg);
+            }
         }
 
         .scroll-indicator svg {
             width: 24px;
             height: 24px;
             transform: rotate(90deg);
+            transition: stroke 0.3s ease;
         }
 
         /* Section Base */
         section {
             padding: 8rem 4rem;
             opacity: 0;
-            transform: translateY(50px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transform: translateY(80px);
+            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), 
+                        transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+            max-width: 1600px;
+            margin: 0 auto;
         }
 
         section.visible {
@@ -311,14 +458,30 @@
             padding: 2.5rem;
             border: 1px solid var(--divider);
             border-radius: 2px;
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
             cursor: pointer;
             background: rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .research-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(0,0,0,0.02) 100%);
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .research-card:hover::before {
+            opacity: 1;
         }
 
         .research-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12);
+            border-color: var(--text-primary);
         }
 
         .research-card h3 {
@@ -326,20 +489,27 @@
             font-weight: 700;
             margin-bottom: 1rem;
             line-height: 1.3;
+            transition: color 0.3s ease;
+        }
+
+        .research-card:hover h3 {
+            color: var(--text-primary);
         }
 
         .research-meta {
             font-size: 0.75rem;
             color: var(--text-secondary);
-            letter-spacing: 0.1em;
+            letter-spacing: 0.12em;
             text-transform: uppercase;
             margin-bottom: 1rem;
+            font-weight: 600;
         }
 
         .research-card p {
             color: var(--text-secondary);
             line-height: 1.7;
             font-size: 0.95rem;
+            font-weight: 500;
         }
 
         /* Publications Section */
@@ -363,8 +533,26 @@
             padding-bottom: 2.5rem;
             border-bottom: 1px solid var(--divider);
             opacity: 0;
-            transform: translateX(-30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
+            transform: translateX(-50px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+
+        .publication-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--text-primary);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .publication-item:hover::before {
+            transform: scaleY(1);
         }
 
         .publication-item.visible {
@@ -372,23 +560,98 @@
             transform: translateX(0);
         }
 
+        .publication-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            gap: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
         .publication-title {
             font-size: 1.1rem;
             font-weight: 600;
-            margin-bottom: 0.5rem;
             line-height: 1.4;
+            flex: 1;
+            transition: color 0.3s ease;
+        }
+
+        .publication-item:hover .publication-title {
+            color: var(--text-primary);
+        }
+
+        .citation-badge {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            white-space: nowrap;
+            min-width: 80px;
+            text-align: center;
         }
 
         .publication-meta {
             font-size: 0.85rem;
             color: var(--text-secondary);
             font-style: italic;
+            font-weight: 500;
         }
 
         .publication-year {
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-primary);
             margin-left: 1rem;
+            font-style: normal;
+        }
+
+        .see-more-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem 3rem;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            border-radius: 2px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            margin-top: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .see-more-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .see-more-btn:hover::before {
+            opacity: 1;
+        }
+
+        .see-more-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .see-more-btn svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .see-more-btn:hover svg {
+            transform: translateX(5px);
         }
 
         /* Awards Section */
@@ -488,6 +751,15 @@
 
         /* Mobile Responsive */
         @media (max-width: 1024px) {
+            .cursor,
+            .cursor-follower {
+                display: none;
+            }
+
+            body {
+                cursor: auto;
+            }
+
             nav {
                 padding: 1.5rem 2rem;
             }
@@ -535,6 +807,15 @@
             .research-grid {
                 grid-template-columns: 1fr;
             }
+
+            .publication-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .citation-badge {
+                align-self: flex-start;
+            }
         }
 
         @media (max-width: 768px) {
@@ -562,6 +843,20 @@
                 font-size: 0.75rem;
             }
 
+            .social-links {
+                justify-content: flex-start;
+            }
+
+            .social-link {
+                width: 45px;
+                height: 45px;
+            }
+
+            .social-link svg {
+                width: 18px;
+                height: 18px;
+            }
+
             .stats {
                 grid-template-columns: 1fr;
                 gap: 2rem;
@@ -571,10 +866,24 @@
                 left: 50%;
                 transform: translateX(-50%);
             }
+
+            .see-more-btn {
+                padding: 1.2rem 2rem;
+                font-size: 0.75rem;
+                width: 100%;
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    
+    <!-- Scroll Progress -->
+    <div class="scroll-progress"></div>
+
     <!-- Navigation -->
     <nav>
         <div class="nav-brand">S. DE</div>
@@ -599,6 +908,18 @@
             <p class="hero-description">
                 Distinguished researcher in animal biotechnology with over three decades of excellence in teaching, research, and innovation. Pioneering work in molecular immunology, genomics, and antimicrobial resistance with 168+ peer-reviewed publications and multiple patents.
             </p>
+            <div class="social-links">
+                <a href="https://scholar.google.com" target="_blank" class="social-link" aria-label="Google Scholar">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 24c-1.66 0-3-.3-4.02-.89l1.18-1.77c.78.36 1.68.54 2.84.54 2.28 0 3.96-.96 4.74-2.7H12v-2.22h7.32c.06.42.12.84.12 1.38 0 3.18-1.62 6.66-7.44 6.66zM5.88 14.4l-1.8 1.08c-.84-1.56-1.32-3.3-1.32-5.16C2.76 5.04 6.9.9 12 .9c2.46 0 4.68.9 6.42 2.4l-1.68 1.68C15.6 3.96 14.1 3.3 12 3.3c-3.54 0-6.42 2.88-6.42 6.42 0 1.74.72 3.36 1.86 4.68h.42z"/>
+                    </svg>
+                </a>
+                <a href="https://www.researchgate.net" target="_blank" class="social-link" aria-label="ResearchGate">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zm-1.59 14.24c0 .28-.03.52-.1.72-.07.21-.17.38-.31.52-.14.14-.32.25-.54.33-.22.08-.48.12-.78.12-.3 0-.56-.04-.78-.12-.22-.08-.4-.19-.54-.33-.14-.14-.25-.31-.31-.52-.07-.2-.1-.44-.1-.72v-4.48c0-.28.03-.52.1-.72.06-.2.17-.37.31-.51.14-.14.32-.25.54-.33.22-.08.48-.12.78-.12.3 0 .56.04.78.12.22.08.4.19.54.33.14.14.24.31.31.51.07.2.1.44.1.72v4.48zm6.27-4.38c-.47-.29-1.07-.43-1.8-.43-.43 0-.82.06-1.17.17-.35.11-.64.27-.87.47v-.41h-1.32v7.68h1.32v-2.76c.23.18.52.32.87.42.35.1.72.15 1.1.15.42 0 .81-.07 1.16-.2.35-.13.65-.32.9-.57.25-.24.45-.54.59-.89.14-.35.21-.75.21-1.2v-1.73c0-.45-.07-.85-.21-1.2-.14-.35-.34-.65-.59-.89-.25-.25-.55-.44-.9-.57z"/>
+                    </svg>
+                </a>
+            </div>
         </div>
         <div class="hero-side">
             <div class="hero-name">SACHINANDAN<br>DE</div>
@@ -700,49 +1021,52 @@
 
     <!-- Publications Section -->
     <section class="publications" id="publications">
-        <div class="section-title">SELECT PUBLICATIONS</div>
+        <div class="section-title">TOP CITED PUBLICATIONS</div>
         <div class="publications-grid">
             <div></div>
             <div class="publications-list">
                 <div class="publication-item">
-                    <div class="publication-title">
-                        Expression and characterization of novel chimeric endolysin CHAPk-SH3bk against biofilm-forming methicillin-resistant Staphylococcus aureus
+                    <div class="publication-header">
+                        <div class="publication-title">
+                            Interferon-tau stimulated gene expression: A proxy to predict embryonic mortality in dairy cows
+                        </div>
+                        <div class="citation-badge">44 CITATIONS</div>
                     </div>
                     <div class="publication-meta">
-                        International Journal of Biological Macromolecules
-                        <span class="publication-year">2024</span>
+                        Theriogenology
+                        <span class="publication-year">2018</span>
                     </div>
                 </div>
                 <div class="publication-item">
-                    <div class="publication-title">
-                        Antimicrobial and antibiofilm effect of cannabinoids from Cannabis sativa against methicillin-resistant Staphylococcus aureus causing bovine mastitis
+                    <div class="publication-header">
+                        <div class="publication-title">
+                            Deciphering the ATP-binding mechanism(s) in NLRP-NACHT 3D models using structural bioinformatics approaches
+                        </div>
+                        <div class="citation-badge">34 CITATIONS</div>
                     </div>
                     <div class="publication-meta">
-                        International Microbiology
-                        <span class="publication-year">2024</span>
+                        PLOS ONE
+                        <span class="publication-year">2018</span>
                     </div>
                 </div>
                 <div class="publication-item">
-                    <div class="publication-title">
-                        Genetic comparison of virulence and resistance factors in phylogenetically diverse Escherichia coli from dairy cattle
+                    <div class="publication-header">
+                        <div class="publication-title">
+                            Antibiotic resistance: a cross-sectional study on knowledge, attitude, and practices among veterinarians of Haryana state in India
+                        </div>
+                        <div class="citation-badge">29 CITATIONS</div>
                     </div>
                     <div class="publication-meta">
-                        Science of The Total Environment
-                        <span class="publication-year">2025</span>
+                        Veterinary World
+                        <span class="publication-year">2019</span>
                     </div>
                 </div>
                 <div class="publication-item">
-                    <div class="publication-title">
-                        Aquaporin gene family in Buffalo and Goat: Molecular characterization and expression analysis
-                    </div>
-                    <div class="publication-meta">
-                        International Journal of Biological Macromolecules
-                        <span class="publication-year">2024</span>
-                    </div>
-                </div>
-                <div class="publication-item">
-                    <div class="publication-title">
-                        Global epidemiology of CTX-M-type β-lactam resistance in human and animal
+                    <div class="publication-header">
+                        <div class="publication-title">
+                            Global epidemiology of CTX-M-type β-lactam resistance in human and animal
+                        </div>
+                        <div class="citation-badge">19 CITATIONS</div>
                     </div>
                     <div class="publication-meta">
                         Comparative Immunology, Microbiology and Infectious Diseases
@@ -750,14 +1074,23 @@
                     </div>
                 </div>
                 <div class="publication-item">
-                    <div class="publication-title">
-                        Poly I:C stimulation in-vitro as a marker for an antiviral response in different cell types generated from Buffalo
+                    <div class="publication-header">
+                        <div class="publication-title">
+                            Virulence and enterotoxin gene profile of methicillin-resistant Staphylococcus aureus isolates from bovine mastitis
+                        </div>
+                        <div class="citation-badge">18 CITATIONS</div>
                     </div>
                     <div class="publication-meta">
-                        Molecular Immunology
-                        <span class="publication-year">2020</span>
+                        Comparative Immunology, Microbiology and Infectious Diseases
+                        <span class="publication-year">2022</span>
                     </div>
                 </div>
+                <a href="https://scholar.google.com" target="_blank" class="see-more-btn">
+                    View All 168 Publications
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
             </div>
         </div>
     </section>
@@ -837,6 +1170,49 @@
     </footer>
 
     <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        const cursorFollower = document.querySelector('.cursor-follower');
+        
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+        let followerX = 0, followerY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            // Smooth cursor movement
+            cursorX += (mouseX - cursorX) * 0.2;
+            cursorY += (mouseY - cursorY) * 0.2;
+            
+            followerX += (mouseX - followerX) * 0.1;
+            followerY += (mouseY - followerY) * 0.1;
+
+            cursor.style.transform = `translate(${cursorX}px, ${cursorY}px)`;
+            cursorFollower.style.transform = `translate(${followerX}px, ${followerY}px)`;
+
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Cursor expand on hover
+        const hoverElements = document.querySelectorAll('a, button, .research-card, .social-link');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('expand'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('expand'));
+        });
+
+        // Scroll Progress
+        window.addEventListener('scroll', () => {
+            const scrollProgress = document.querySelector('.scroll-progress');
+            const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (window.scrollY / windowHeight) * 100;
+            scrollProgress.style.width = scrolled + '%';
+        });
+
         // Intersection Observer for sections
         const observerOptions = {
             threshold: 0.15,
@@ -855,20 +1231,52 @@
             observer.observe(section);
         });
 
-        // Publication items animation
+        // Publication items animation with stagger
         const publicationObserver = new IntersectionObserver((entries) => {
-            entries.forEach((entry, index) => {
+            entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    setTimeout(() => {
-                        entry.target.classList.add('visible');
-                    }, index * 100);
+                    const items = entry.target.querySelectorAll('.publication-item');
+                    items.forEach((item, index) => {
+                        setTimeout(() => {
+                            item.classList.add('visible');
+                        }, index * 150);
+                    });
+                    publicationObserver.unobserve(entry.target);
                 }
             });
         }, { threshold: 0.1 });
 
-        document.querySelectorAll('.publication-item').forEach(item => {
-            publicationObserver.observe(item);
-        });
+        const publicationsList = document.querySelector('.publications-list');
+        if (publicationsList) {
+            publicationObserver.observe(publicationsList);
+        }
+
+        // Research cards stagger animation
+        const researchObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const cards = entry.target.querySelectorAll('.research-card');
+                    cards.forEach((card, index) => {
+                        setTimeout(() => {
+                            card.style.opacity = '1';
+                            card.style.transform = 'translateY(0)';
+                        }, index * 100);
+                    });
+                    researchObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        const researchGrid = document.querySelector('.research-grid');
+        if (researchGrid) {
+            // Set initial state
+            document.querySelectorAll('.research-card').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(50px)';
+                card.style.transition = 'all 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+            });
+            researchObserver.observe(researchGrid);
+        }
 
         // Counter animation for stats
         const statsObserver = new IntersectionObserver((entries) => {
@@ -925,7 +1333,7 @@
                     const scrolled = window.pageYOffset;
                     const heroImage = document.querySelector('.hero-image-wrapper');
                     if (heroImage && scrolled < window.innerHeight) {
-                        heroImage.style.transform = `translateY(${scrolled * 0.3}px)`;
+                        heroImage.style.transform = `translateY(${scrolled * 0.2}px)`;
                     }
                     ticking = false;
                 });
@@ -948,6 +1356,41 @@
             }
             
             lastScroll = currentScroll;
+        });
+
+        // Add reveal animation to awards
+        const awardsObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    const items = entry.target.querySelectorAll('.award-item');
+                    items.forEach((item, index) => {
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateX(0)';
+                        }, index * 100);
+                    });
+                    awardsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        const awardsList = document.querySelector('.awards-list');
+        if (awardsList) {
+            document.querySelectorAll('.award-item').forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-30px)';
+                item.style.transition = 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)';
+            });
+            awardsObserver.observe(awardsList);
+        }
+
+        // Page load animation
+        window.addEventListener('load', () => {
+            document.body.style.opacity = '0';
+            setTimeout(() => {
+                document.body.style.transition = 'opacity 0.6s ease';
+                document.body.style.opacity = '1';
+            }, 100);
         });
     </script>
 </body>
