@@ -50,16 +50,17 @@
             cursor: none;
         }
 
-        /* --- BACKGROUND RIPPLE CANVAS --- */
-        #ripple-canvas {
+        /* --- NOISE TEXTURE OVERLAY --- */
+        .noise-overlay {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            opacity: 0.15; /* Subtle opacity */
             pointer-events: none;
+            z-index: -1;
+            opacity: 0.07;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='1'/%3E%3C/svg%3E");
         }
 
         /* --- CUSTOM CURSOR --- */
@@ -128,15 +129,21 @@
             transform: translateY(-100%);
         }
 
-        /* --- NAVBAR (Glassmorphism Pill) --- */
+        /* --- NAVBAR (Centered Pill) --- */
         .navbar {
             display: flex;
             justify-content: center;
             align-items: center;
             position: fixed;
             top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            
+            /* Centering without transform to avoid animation conflict */
+            left: 0;
+            right: 0;
+            margin-left: auto;
+            margin-right: auto;
+            width: fit-content;
+            max-width: 90%;
             z-index: 1000;
             
             /* Glassmorphism Styles */
@@ -147,9 +154,7 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
             
             padding: 0.8rem 2.5rem;
-            border-radius: 100px; /* Pill shape */
-            width: auto;
-            max-width: 90%;
+            border-radius: 100px;
         }
 
         .nav-center {
@@ -349,7 +354,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* No filter here to show the real image clearly */
             transition: transform 0.8s var(--easing);
         }
 
@@ -649,7 +653,6 @@
                 justify-content: center;
             }
             
-            /* On mobile, maybe shrink gap or use a menu icon, but kept simple here */
             .nav-center { 
                 gap: 1rem; 
                 flex-wrap: wrap;
@@ -677,8 +680,8 @@
 </head>
 <body>
 
-    <!-- Background Ripple Canvas -->
-    <canvas id="ripple-canvas"></canvas>
+    <!-- Background Noise Overlay -->
+    <div class="noise-overlay"></div>
 
     <!-- Loading Overlay -->
     <div class="loader">
@@ -751,7 +754,6 @@
             <!-- Right Column: Image -->
             <div class="hero-visual reveal-image">
                 <div class="image-wrapper">
-                    <!-- Placeholder: Replace with actual image path -->
                     <img src="https://naas.org.in/uploaded_files/member_image/de,_sachinandan.jpg" alt="Professor Sachinandan De" class="portrait-img">
                 </div>
             </div>
@@ -933,35 +935,35 @@
 
             <div class="pub-list">
                 <div class="pub-item fade-in-up">
-                    <div class="pub-year">TOP CITED</div>
+                    <div class="pub-year">2024</div>
                     <div class="pub-info">
                         <h5 class="pub-title">Expression and characterization of novel chimeric endolysin CHAPK-SH3bk against biofilm-forming methicillin-resistant Staphylococcus aureus.</h5>
                         <p class="pub-journal">Behera et al. (2024). International Journal of Biological Macromolecules.</p>
                     </div>
                 </div>
                 <div class="pub-item fade-in-up">
-                    <div class="pub-year">TOP CITED</div>
+                    <div class="pub-year">2024</div>
                     <div class="pub-info">
                         <h5 class="pub-title">Antimicrobial and antibiofilm effect of cannabinoids from Cannabis sativa against methicillin-resistant Staphylococcus aureus.</h5>
                         <p class="pub-journal">Roshan et al. (2024). International Microbiology.</p>
                     </div>
                 </div>
                 <div class="pub-item fade-in-up">
-                    <div class="pub-year">TOP CITED</div>
+                    <div class="pub-year">2022</div>
                     <div class="pub-info">
                         <h5 class="pub-title">Development of gold nanoparticle-based visual assay for rapid detection of Escherichia coli specific DNA in milk.</h5>
                         <p class="pub-journal">Deb et al. (2022). LWT Food Science and Technology.</p>
                     </div>
                 </div>
                 <div class="pub-item fade-in-up">
-                    <div class="pub-year">TOP CITED</div>
+                    <div class="pub-year">2022</div>
                     <div class="pub-info">
                         <h5 class="pub-title">Global epidemiology of CTX-M-type B-lactam resistance in human and animal.</h5>
                         <p class="pub-journal">Rana et al. (2022). Comparative Immunology, Microbiology and Infectious Diseases.</p>
                     </div>
                 </div>
                 <div class="pub-item fade-in-up">
-                    <div class="pub-year">TOP CITED</div>
+                    <div class="pub-year">2022</div>
                     <div class="pub-info">
                         <h5 class="pub-title">Virulence and enterotoxin gene profile of methicillin-resistant Staphylococcus aureus isolates from bovine mastitis.</h5>
                         <p class="pub-journal">Singh et al. (2022). Comparative Immunology, Microbiology and Infectious Diseases.</p>
@@ -1019,7 +1021,6 @@
             <div class="footer-grid">
                 <div class="footer-brand">
                     <span>S. De</span>
-                    <span class="phd">PH.D</span>
                 </div>
                 <div class="footer-contact">
                     <p>National Dairy Research Institute</p>
@@ -1072,57 +1073,7 @@
                 cursorOutline.style.display = 'none';
             }
 
-            // --- 3. BACKGROUND RIPPLE ---
-            const canvas = document.getElementById('ripple-canvas');
-            const ctx = canvas.getContext('2d');
-            let ripples = [];
-
-            // Resize canvas
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            window.addEventListener('resize', resizeCanvas);
-            resizeCanvas();
-
-            // Create ripple on mouse move
-            window.addEventListener('mousemove', (e) => {
-                // Add a ripple every few frames to avoid clutter
-                if (Math.random() > 0.8) {
-                    ripples.push({
-                        x: e.clientX,
-                        y: e.clientY,
-                        radius: 0,
-                        alpha: 0.5
-                    });
-                }
-            });
-
-            function animateRipples() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                ripples.forEach((ripple, index) => {
-                    ripple.radius += 1.5; // Expansion speed
-                    ripple.alpha -= 0.01; // Fade speed
-
-                    ctx.beginPath();
-                    ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
-                    ctx.strokeStyle = `rgba(10, 10, 10, ${ripple.alpha})`;
-                    ctx.lineWidth = 1;
-                    ctx.stroke();
-
-                    // Remove ripples that are invisible
-                    if (ripple.alpha <= 0) {
-                        ripples.splice(index, 1);
-                    }
-                });
-
-                requestAnimationFrame(animateRipples);
-            }
-            animateRipples();
-
-
-            // --- 4. NUMBER COUNTER ANIMATION ---
+            // --- 3. NUMBER COUNTER ANIMATION ---
             const statsObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
@@ -1155,7 +1106,7 @@
             document.querySelectorAll('.hs-num').forEach(el => statsObserver.observe(el));
 
 
-            // --- 5. TEXT SPLITTING UTILITY ---
+            // --- 4. TEXT SPLITTING UTILITY ---
             const splitTextElements = document.querySelectorAll('.split-text div');
             
             splitTextElements.forEach(element => {
@@ -1170,7 +1121,7 @@
                 });
             });
 
-            // --- 6. INTERSECTION OBSERVER ---
+            // --- 5. INTERSECTION OBSERVER ---
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
@@ -1205,7 +1156,7 @@
                 document.querySelectorAll('.reveal-image').forEach(el => observer.observe(el));
             }
 
-            // --- 7. PARALLAX EFFECT ---
+            // --- 6. PARALLAX EFFECT ---
             const imageContainer = document.querySelector('.image-wrapper');
             const image = document.querySelector('.portrait-img');
 
@@ -1225,7 +1176,7 @@
                 });
             }
 
-            // --- 8. SMOOTH SCROLL ---
+            // --- 7. SMOOTH SCROLL ---
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
