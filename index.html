@@ -17,7 +17,7 @@
             --accent-color: #0A0A0A;
             --border-color: rgba(10, 10, 10, 0.15);
             
-            /* Font Pairing - Updated */
+            /* Font Pairing */
             --font-display: 'Hanken Grotesk', sans-serif;
             --font-body: 'Inter', sans-serif;
             
@@ -48,6 +48,18 @@
             text-decoration: none;
             color: inherit;
             cursor: none;
+        }
+
+        /* --- BACKGROUND RIPPLE CANVAS --- */
+        #ripple-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.15; /* Subtle opacity */
+            pointer-events: none;
         }
 
         /* --- CUSTOM CURSOR --- */
@@ -116,48 +128,50 @@
             transform: translateY(-100%);
         }
 
-        /* --- NAVBAR --- */
+        /* --- NAVBAR (Glassmorphism Pill) --- */
         .navbar {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            padding: 2rem 3rem;
             position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 100;
-            background: rgba(240, 240, 235, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .brand {
-            font-family: var(--font-display);
-            font-weight: 800; /* Bold for Hanken */
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-size: 1.2rem;
-        }
-
-        .phd {
-            font-family: var(--font-body);
-            font-weight: 600;
-            font-size: 0.8rem;
-            margin-left: 5px;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1000;
+            
+            /* Glassmorphism Styles */
+            background: rgba(240, 240, 235, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+            
+            padding: 0.8rem 2.5rem;
+            border-radius: 100px; /* Pill shape */
+            width: auto;
+            max-width: 90%;
         }
 
         .nav-center {
             display: flex;
-            gap: 3rem;
+            gap: 2.5rem;
+            margin: 0;
         }
 
         .nav-link {
             font-family: var(--font-body);
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.05em;
             font-weight: 600;
             position: relative;
+            color: var(--text-color);
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .nav-link:hover {
+            opacity: 1;
         }
 
         .nav-link::after {
@@ -175,13 +189,6 @@
             width: 100%;
         }
 
-        .email-link {
-            font-family: var(--font-body);
-            font-size: 0.9rem;
-            letter-spacing: 0.05em;
-            font-weight: 600;
-        }
-
         /* --- LAYOUT UTILS --- */
         .border-top {
             border-top: 1px solid var(--border-color);
@@ -192,7 +199,7 @@
             display: grid;
             grid-template-columns: 1.2fr 1fr;
             min-height: 100vh;
-            padding-top: 80px;
+            padding-top: 100px; /* Increased for pill navbar */
             max-width: 1600px;
             margin: 0 auto;
             position: relative;
@@ -210,22 +217,27 @@
             margin-bottom: 2rem;
         }
 
-        .hero-title, .hero-name {
+        .hero-title {
             font-family: var(--font-display);
-            font-size: clamp(3rem, 5.5vw, 6rem);
+            font-size: clamp(2rem, 4vw, 4rem); 
             line-height: 0.95;
-            font-weight: 800; /* Strong bold for Hanken */
+            font-weight: 800;
             text-transform: uppercase;
             letter-spacing: -0.03em;
             color: var(--text-color);
+            opacity: 0.6; 
         }
 
         .hero-name {
-            color: var(--text-color); /* Solid color, no stroke */
-            -webkit-text-stroke: 0;
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 7vw, 8rem); 
+            line-height: 0.9;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: -0.03em;
+            color: var(--text-color);
             margin-top: 10px;
-            font-weight: 900; /* Even bolder */
-            font-style: normal; /* Hanken is cleaner upright */
+            font-style: normal;
         }
 
         .split-text div { overflow: hidden; }
@@ -246,6 +258,7 @@
             display: flex;
             gap: 1.5rem;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .btn-main {
@@ -256,25 +269,39 @@
             font-weight: 700;
             font-size: 0.85rem;
             letter-spacing: 0.05em;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, background-color 0.3s ease, color 0.3s ease;
             font-family: var(--font-body);
+            border: 1px solid var(--text-color);
         }
 
         .btn-main:hover {
             transform: translateY(-3px);
+            background-color: transparent;
+            color: var(--text-color);
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--text-color);
+            padding: 1rem 2rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.05em;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            font-family: var(--font-body);
+            border: 1px solid var(--text-color);
         }
 
-        .btn-text {
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            border-bottom: 1px solid currentColor;
-            font-family: var(--font-body);
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            background-color: var(--text-color);
+            color: var(--bg-color);
         }
 
         .hero-stats {
             display: flex;
-            gap: 3rem;
+            gap: 4rem;
             padding-top: 2rem;
             border-top: 1px solid var(--border-color);
         }
@@ -286,9 +313,10 @@
 
         .hs-num {
             font-family: var(--font-display);
-            font-size: 2.5rem;
+            font-size: 3rem;
             font-weight: 700;
             font-style: normal;
+            line-height: 1;
         }
 
         .hs-label {
@@ -297,6 +325,7 @@
             letter-spacing: 0.05em;
             font-weight: 600;
             opacity: 0.7;
+            margin-top: 5px;
         }
 
         .hero-visual {
@@ -313,36 +342,19 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
+            background-color: #e0e0e0;
         }
 
         .portrait-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            filter: grayscale(100%);
-            transition: transform 0.8s var(--easing), filter 0.5s ease;
+            /* No filter here to show the real image clearly */
+            transition: transform 0.8s var(--easing);
         }
 
         .image-wrapper:hover .portrait-img {
             transform: scale(1.05);
-            filter: grayscale(0%);
-        }
-
-        .visual-caption {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            background: rgba(240, 240, 235, 0.9);
-            backdrop-filter: blur(5px);
-            border-top: 1px solid var(--border-color);
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
         }
 
         /* --- CONTENT SECTIONS --- */
@@ -539,6 +551,28 @@
             opacity: 0.5;
         }
 
+        .btn-outline {
+            border: 1px solid var(--text-color);
+            padding: 1rem 3rem;
+            text-transform: uppercase;
+            font-weight: 700;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            transition: all 0.3s ease;
+            font-family: var(--font-body);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+        }
+
+        .center-btn-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 4rem;
+        }
+
         /* --- ANIMATIONS CLASSES --- */
         .char {
             display: inline-block;
@@ -609,11 +643,25 @@
         }
 
         @media (max-width: 768px) {
-            .navbar { padding: 1.5rem; }
-            .nav-center { display: none; }
-            .hero-title, .hero-name {
-                font-size: 3rem;
+            .navbar { 
+                width: 90%;
+                padding: 0.8rem 1rem;
+                justify-content: center;
             }
+            
+            /* On mobile, maybe shrink gap or use a menu icon, but kept simple here */
+            .nav-center { 
+                gap: 1rem; 
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .nav-link {
+                font-size: 0.7rem;
+            }
+
+            .hero-title { font-size: 2rem; }
+            .hero-name { font-size: 4rem; }
             .pub-item {
                 grid-template-columns: 1fr;
                 gap: 0.5rem;
@@ -629,6 +677,9 @@
 </head>
 <body>
 
+    <!-- Background Ripple Canvas -->
+    <canvas id="ripple-canvas"></canvas>
+
     <!-- Loading Overlay -->
     <div class="loader">
         <div class="loader-text">Loading Profile...</div>
@@ -638,20 +689,14 @@
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
-    <!-- Navigation -->
+    <!-- Navigation (Centered Pill) -->
     <nav class="navbar fade-in-down">
-        <div class="nav-left">
-            <a href="#" class="brand">S. De</a>
-        </div>
         <div class="nav-center">
             <a href="#about" class="nav-link">About</a>
             <a href="#research" class="nav-link">Research</a>
             <a href="#projects" class="nav-link">Projects</a>
             <a href="#publications" class="nav-link">Publications</a>
             <a href="#contact" class="nav-link">Contact</a>
-        </div>
-        <div class="nav-right">
-            <a href="mailto:sachinandan@gmail.com" class="email-link">sachinandan@gmail.com</a>
         </div>
     </nav>
 
@@ -680,23 +725,24 @@
                     </p>
                     
                     <div class="hero-actions">
-                         <a href="#about" class="btn-main">View Full Biography</a>
-                         <a href="#research" class="btn-text">Core Research &darr;</a>
+                         <a href="https://scholar.google.com/citations?view_op=list_works&hl=en&hl=en&user=KazNJTIAAAAJ&sortby=pubdate" target="_blank" class="btn-main">Google Scholar</a>
+                         <a href="https://www.researchgate.net/profile/Sachinandan-De-2" target="_blank" class="btn-secondary">ResearchGate</a>
                     </div>
                 </div>
 
-                <!-- Stats -->
+                <!-- Stats with Counter Animation -->
                 <div class="hero-stats fade-in-up">
                     <div class="h-stat">
-                        <span class="hs-num">35+</span>
+                        <!-- data-target is the final number to count to -->
+                        <span class="hs-num" data-target="35">0</span>
                         <span class="hs-label">Years Exp.</span>
                     </div>
                     <div class="h-stat">
-                        <span class="hs-num">168+</span>
+                        <span class="hs-num" data-target="168">0</span>
                         <span class="hs-label">Publications</span>
                     </div>
                     <div class="h-stat">
-                        <span class="hs-num">20+</span>
+                        <span class="hs-num" data-target="20">0</span>
                         <span class="hs-label">PhD Scholars</span>
                     </div>
                 </div>
@@ -705,11 +751,8 @@
             <!-- Right Column: Image -->
             <div class="hero-visual reveal-image">
                 <div class="image-wrapper">
-                    <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1200&auto=format&fit=crop" alt="Professor Sachinandan De" class="portrait-img">
-                </div>
-                <div class="visual-caption">
-                    <span>EST. 1987</span>
-                    <span>NDRI KARNAL</span>
+                    <!-- Placeholder: Replace with actual image path -->
+                    <img src="https://naas.org.in/uploaded_files/member_image/de,_sachinandan.jpg" alt="Professor Sachinandan De" class="portrait-img">
                 </div>
             </div>
         </section>
@@ -881,141 +924,55 @@
             </div>
         </section>
 
-        <!-- Publications Section -->
+        <!-- Publications Section (Updated) -->
         <section id="publications" class="content-section border-top">
             <div class="section-header fade-in-up">
                 <span class="section-label">(04)</span>
-                <h3 class="section-title">FULL BIBLIOGRAPHY</h3>
+                <h3 class="section-title">BIBLIOGRAPHY</h3>
             </div>
 
-            <!-- 2025 -->
             <div class="pub-list">
                 <div class="pub-item fade-in-up">
-                    <div class="pub-year">2025</div>
+                    <div class="pub-year">TOP CITED</div>
                     <div class="pub-info">
-                        <h5 class="pub-title">Field validation of an in-house epitope-specific ELISA for age-specific profiling of anti-müllerian hormone.</h5>
-                        <p class="pub-journal">Pal et al. Proceedings of the Indian National Science Academy.</p>
+                        <h5 class="pub-title">Expression and characterization of novel chimeric endolysin CHAPK-SH3bk against biofilm-forming methicillin-resistant Staphylococcus aureus.</h5>
+                        <p class="pub-journal">Behera et al. (2024). International Journal of Biological Macromolecules.</p>
                     </div>
                 </div>
                 <div class="pub-item fade-in-up">
-                    <div class="pub-year">2025</div>
+                    <div class="pub-year">TOP CITED</div>
                     <div class="pub-info">
-                        <h5 class="pub-title">Genetic comparison of virulence and resistance factors in phylogenetically diverse Escherichia coli.</h5>
-                        <p class="pub-journal">Narwal et al. Science of The Total Environment.</p>
+                        <h5 class="pub-title">Antimicrobial and antibiofilm effect of cannabinoids from Cannabis sativa against methicillin-resistant Staphylococcus aureus.</h5>
+                        <p class="pub-journal">Roshan et al. (2024). International Microbiology.</p>
                     </div>
                 </div>
                 <div class="pub-item fade-in-up">
-                    <div class="pub-year">2025</div>
-                    <div class="pub-info">
-                        <h5 class="pub-title">Activity of GS-linked chimeric endolysin CHAPk-SH3bk against methicillin-resistant Staphylococcus aureus biofilms.</h5>
-                        <p class="pub-journal">Behera et al. npj Biofilms and Microbiomes.</p>
-                    </div>
-                </div>
-                <div class="pub-item fade-in-up">
-                    <div class="pub-year">2025</div>
-                    <div class="pub-info">
-                        <h5 class="pub-title">The synergistic and chimeric mechanism of bacteriophage endolysins: opportunities for application in biotherapeutics.</h5>
-                        <p class="pub-journal">Behera et al. Probiotics and Antimicrobial Proteins.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2024 -->
-            <div class="section-header fade-in-up" style="margin-top: 4rem;">
-                <span class="section-label">(2024)</span>
-            </div>
-            <div class="pub-list">
-                <div class="pub-item fade-in-up">
-                    <div class="pub-year">2024</div>
-                    <div class="pub-info">
-                        <h5 class="pub-title">Expression and characterization of novel chimeric endolysin CHAPK-SH3bk against biofilm-forming MRSA.</h5>
-                        <p class="pub-journal">Behera et al. Int J Biol Macromol.</p>
-                    </div>
-                </div>
-                <div class="pub-item fade-in-up">
-                    <div class="pub-year">2024</div>
-                    <div class="pub-info">
-                        <h5 class="pub-title">Antimicrobial and antibiofilm effect of cannabinoids from Cannabis sativa against MRSA causing bovine mastitis.</h5>
-                        <p class="pub-journal">Roshan et al. International Microbiology.</p>
-                    </div>
-                </div>
-                <div class="pub-item fade-in-up">
-                    <div class="pub-year">2024</div>
-                    <div class="pub-info">
-                        <h5 class="pub-title">Characterization and expression profiling of buffalo IFN-lambda family.</h5>
-                        <p class="pub-journal">Gautam et al. Veterinary Immunology and Immunopathology.</p>
-                    </div>
-                </div>
-                <div class="pub-item fade-in-up">
-                    <div class="pub-year">2024</div>
-                    <div class="pub-info">
-                        <h5 class="pub-title">Evolutionary insights of interferon lambda genes in tetrapods.</h5>
-                        <p class="pub-journal">Gautam et al. Journal of Evolutionary Biology.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 2023 -->
-            <div class="section-header fade-in-up" style="margin-top: 4rem;">
-                <span class="section-label">(2023)</span>
-            </div>
-            <div class="pub-list">
-                <div class="pub-item fade-in-up">
-                    <div class="pub-year">2023</div>
-                    <div class="pub-info">
-                        <h5 class="pub-title">Development of B cell epitopes-based enzyme linked immune sorbent assay for detection of bovine anti-Mullerian hormone.</h5>
-                        <p class="pub-journal">Pal et al. 3 Biotech.</p>
-                    </div>
-                </div>
-                <div class="pub-item fade-in-up">
-                    <div class="pub-year">2023</div>
-                    <div class="pub-info">
-                        <h5 class="pub-title">Evaluation of Virulence, Antimicrobial Resistance and Biofilm Forming Potential of MRSA.</h5>
-                        <p class="pub-journal">Singh et al. Current Microbiology.</p>
-                    </div>
-                </div>
-                <div class="pub-item fade-in-up">
-                    <div class="pub-year">2023</div>
-                    <div class="pub-info">
-                        <h5 class="pub-title">Adaptive Selection in the Evolution of Aquaglyceroporins in Mammals.</h5>
-                        <p class="pub-journal">Rajput et al. Journal of Molecular Evolution.</p>
-                    </div>
-                </div>
-                <div class="pub-item fade-in-up">
-                    <div class="pub-year">2023</div>
-                    <div class="pub-info">
-                        <h5 class="pub-title">Poly (I: C), a double stranded RNA analog, activates the anti-viral DNA sensors in buffalo fibroblasts.</h5>
-                        <p class="pub-journal">Chera et al. Veterinary Vaccine.</p>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- 2022 -->
-            <div class="section-header fade-in-up" style="margin-top: 4rem;">
-                <span class="section-label">(2022)</span>
-            </div>
-            <div class="pub-list">
-                <div class="pub-item fade-in-up">
-                    <div class="pub-year">2022</div>
+                    <div class="pub-year">TOP CITED</div>
                     <div class="pub-info">
                         <h5 class="pub-title">Development of gold nanoparticle-based visual assay for rapid detection of Escherichia coli specific DNA in milk.</h5>
-                        <p class="pub-journal">Deb et al. LWT food science and technology.</p>
+                        <p class="pub-journal">Deb et al. (2022). LWT Food Science and Technology.</p>
                     </div>
                 </div>
                 <div class="pub-item fade-in-up">
-                    <div class="pub-year">2022</div>
-                    <div class="pub-info">
-                        <h5 class="pub-title">CRISPR/Cas9 cassette targeting Escherichia coli blaCTX-M specific gene of mastitis cow milk origin.</h5>
-                        <p class="pub-journal">Deb et al. Animal Biotechnology.</p>
-                    </div>
-                </div>
-                <div class="pub-item fade-in-up">
-                    <div class="pub-year">2022</div>
+                    <div class="pub-year">TOP CITED</div>
                     <div class="pub-info">
                         <h5 class="pub-title">Global epidemiology of CTX-M-type B-lactam resistance in human and animal.</h5>
-                        <p class="pub-journal">Rana et al. Comparative Immunology, Microbiology and Infectious Diseases.</p>
+                        <p class="pub-journal">Rana et al. (2022). Comparative Immunology, Microbiology and Infectious Diseases.</p>
                     </div>
                 </div>
+                <div class="pub-item fade-in-up">
+                    <div class="pub-year">TOP CITED</div>
+                    <div class="pub-info">
+                        <h5 class="pub-title">Virulence and enterotoxin gene profile of methicillin-resistant Staphylococcus aureus isolates from bovine mastitis.</h5>
+                        <p class="pub-journal">Singh et al. (2022). Comparative Immunology, Microbiology and Infectious Diseases.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="center-btn-container fade-in-up" style="margin-top: 4rem;">
+                <a href="https://scholar.google.com/citations?view_op=list_works&hl=en&hl=en&user=KazNJTIAAAAJ&sortby=pubdate" target="_blank" class="btn-outline">
+                    View on Google Scholar ↗
+                </a>
             </div>
         </section>
 
@@ -1041,9 +998,9 @@
                 <div class="research-card fade-in-up">
                     <h4 class="card-title">NETWORKS</h4>
                     <p class="card-text">
-                        <a href="#" class="card-link">Google Scholar</a><br>
-                        <a href="#" class="card-link">ORCID</a><br>
-                        <a href="#" class="card-link">ResearchGate</a>
+                        <a href="https://scholar.google.com/citations?view_op=list_works&hl=en&hl=en&user=KazNJTIAAAAJ&sortby=pubdate" target="_blank" class="card-link">Google Scholar</a><br>
+                        <a href="https://orcid.org/my-orcid?orcid=0000-0001-5783-0775" target="_blank" class="card-link">ORCID</a><br>
+                        <a href="https://www.researchgate.net/profile/Sachinandan-De-2" target="_blank" class="card-link">ResearchGate</a>
                     </p>
                 </div>
                 <div class="research-card fade-in-up">
@@ -1097,17 +1054,14 @@
             const cursorDot = document.querySelector('.cursor-dot');
             const cursorOutline = document.querySelector('.cursor-outline');
 
-            // Only activate custom cursor on desktop to prevent issues on touch devices
             if (window.matchMedia("(pointer: fine)").matches) {
                 window.addEventListener('mousemove', (e) => {
                     const posX = e.clientX;
                     const posY = e.clientY;
 
-                    // Dot follows immediately
                     cursorDot.style.left = `${posX}px`;
                     cursorDot.style.top = `${posY}px`;
 
-                    // Outline follows with slight delay
                     cursorOutline.animate({
                         left: `${posX}px`,
                         top: `${posY}px`
@@ -1118,7 +1072,90 @@
                 cursorOutline.style.display = 'none';
             }
 
-            // --- 3. TEXT SPLITTING UTILITY ---
+            // --- 3. BACKGROUND RIPPLE ---
+            const canvas = document.getElementById('ripple-canvas');
+            const ctx = canvas.getContext('2d');
+            let ripples = [];
+
+            // Resize canvas
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+
+            // Create ripple on mouse move
+            window.addEventListener('mousemove', (e) => {
+                // Add a ripple every few frames to avoid clutter
+                if (Math.random() > 0.8) {
+                    ripples.push({
+                        x: e.clientX,
+                        y: e.clientY,
+                        radius: 0,
+                        alpha: 0.5
+                    });
+                }
+            });
+
+            function animateRipples() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                ripples.forEach((ripple, index) => {
+                    ripple.radius += 1.5; // Expansion speed
+                    ripple.alpha -= 0.01; // Fade speed
+
+                    ctx.beginPath();
+                    ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
+                    ctx.strokeStyle = `rgba(10, 10, 10, ${ripple.alpha})`;
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+
+                    // Remove ripples that are invisible
+                    if (ripple.alpha <= 0) {
+                        ripples.splice(index, 1);
+                    }
+                });
+
+                requestAnimationFrame(animateRipples);
+            }
+            animateRipples();
+
+
+            // --- 4. NUMBER COUNTER ANIMATION ---
+            const statsObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const target = entry.target;
+                        const finalValue = parseInt(target.getAttribute('data-target'));
+                        const duration = 2000; // Animation duration in ms
+                        const frameDuration = 1000 / 60; // 60fps
+                        const totalFrames = Math.round(duration / frameDuration);
+                        let frame = 0;
+
+                        const counter = setInterval(() => {
+                            frame++;
+                            const progress = frame / totalFrames;
+                            // Ease out cubic function
+                            const currentCount = Math.round(finalValue * (1 - Math.pow(1 - progress, 3)));
+                            
+                            target.innerText = currentCount + '+';
+
+                            if (frame === totalFrames) {
+                                clearInterval(counter);
+                                target.innerText = finalValue + '+';
+                            }
+                        }, frameDuration);
+
+                        observer.unobserve(target);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            document.querySelectorAll('.hs-num').forEach(el => statsObserver.observe(el));
+
+
+            // --- 5. TEXT SPLITTING UTILITY ---
             const splitTextElements = document.querySelectorAll('.split-text div');
             
             splitTextElements.forEach(element => {
@@ -1133,7 +1170,7 @@
                 });
             });
 
-            // --- 4. INTERSECTION OBSERVER ---
+            // --- 6. INTERSECTION OBSERVER ---
             const observerOptions = {
                 root: null,
                 rootMargin: '0px',
@@ -1168,7 +1205,7 @@
                 document.querySelectorAll('.reveal-image').forEach(el => observer.observe(el));
             }
 
-            // --- 5. PARALLAX EFFECT ---
+            // --- 7. PARALLAX EFFECT ---
             const imageContainer = document.querySelector('.image-wrapper');
             const image = document.querySelector('.portrait-img');
 
@@ -1188,7 +1225,7 @@
                 });
             }
 
-            // --- 6. SMOOTH SCROLL ---
+            // --- 8. SMOOTH SCROLL ---
             document.querySelectorAll('a[href^="#"]').forEach(anchor => {
                 anchor.addEventListener('click', function (e) {
                     e.preventDefault();
